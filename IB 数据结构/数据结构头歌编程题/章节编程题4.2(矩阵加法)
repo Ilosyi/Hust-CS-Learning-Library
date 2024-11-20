@@ -1,0 +1,30 @@
+TSMatrix ADD(TSMatrix A, TSMatrix B)
+//返回矩阵A、B相加的结果
+{
+    /************** begin *****************/
+    
+    int hang = A.mu, lie = A.nu;
+    TSMatrix C; C.mu = hang, C.nu = lie,C.tu=0;
+    int arr[hang+1][lie+1] = { 0 };//注意+1，下标从1开始
+    for (int m = 1; m <=A.tu; m++)
+    {
+        arr[A.data[m].i][A.data[m].j] += A.data[m].e;
+    }
+    for (int m = 1; m <=B.tu; m++)
+    {
+        arr[B.data[m].i][B.data[m].j] += B.data[m].e;
+    }
+      for (int m = 1; m <= hang; m++) {
+        for (int n = 1; n <= lie; n++) {
+            if (arr[m][n] != 0) {
+                C.tu++;
+                C.data[C.tu].i = m;
+                C.data[C.tu].j = n;
+                C.data[C.tu].e = arr[m][n];
+            }
+        }
+    }
+
+    return C;
+    /**************  end  *****************/
+}

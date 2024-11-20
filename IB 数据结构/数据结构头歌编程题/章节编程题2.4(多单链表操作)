@@ -1,0 +1,117 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>0
+typedef int ElemType;
+typedef struct node
+{
+    ElemType data;
+    struct node* next;
+} NODE, * LinkList;
+
+// 函数声明
+LinkList createLinkedList();
+void printLinkedList(LinkList L);
+void destroyLinkedList(LinkList L);
+void TriLinkList(LinkList  A, LinkList  B, LinkList  C);
+int main() {
+    // 建立三个链表
+    LinkList A = createLinkedList();
+    LinkList B = createLinkedList();
+    LinkList C = createLinkedList();
+    TriLinkList(A, B, C);
+    // 打印三个链表
+    printf("List A: ");
+    printLinkedList(A);
+
+
+    // 销毁三个链表
+    destroyLinkedList(A);
+    destroyLinkedList(B);
+    destroyLinkedList(C);
+    
+    return 0;
+}
+void deletedot(LinkList t, LinkList A)
+{
+    LinkList p = A;
+    while (p->next != t)
+    {
+        p = p->next;
+    }
+    p->next = t->next;
+    free(t);
+}
+void TriLinkList(LinkList  A, LinkList  B, LinkList  C)
+{
+    /**********Begin**********/
+    LinkList pA = A->next; // A链表指针
+    LinkList pB = B->next; // B链表指针
+    LinkList pC = C->next; // C链表指针
+
+    while (pA && pB && pC) { // 同时遍历三个链表
+        if (pA->data == pB->data && pB->data == pC->data) { // 如果三个节点的值相等
+            LinkList temp = pA; // 保存当前节点的指针
+            pA = pA->next; // 移动A链表指针
+            deletedot(temp,A); // 删除当前节点
+        }
+        else {
+            // 移动指向值最小节点的指针
+            if (pA->data <= pB->data && pA->data <= pC->data) {
+                pA = pA->next;
+            }
+            else if (pB->data <= pA->data && pB->data <= pC->data) {
+                pB = pB->next;
+            }
+            else {
+                pC = pC->next;
+            }
+        }
+    }
+     /**********End**********/
+}
+// 创建单链表
+LinkList createLinkedList() {
+    LinkList head = (LinkList)malloc(sizeof(NODE)); // 创建头结点
+    head->next = NULL; // 头结点的指针域置空
+
+    LinkList tail = head; // 尾指针指向头结点，初始时头尾指针重合
+
+    ElemType data;
+    printf("请输入链表数据，以0结束输入：\n");
+    scanf("%d", &data); // 读取第一个数据
+
+    while (data != 0) { // 循环读取数据直到输入0
+        LinkList newNode = (LinkList)malloc(sizeof(NODE)); // 创建新节点
+        newNode->data = data; // 新节点赋值
+        newNode->next = NULL; // 新节点指针域置空
+
+        tail->next = newNode; // 尾结点的指针域指向新节点
+        tail = newNode; // 尾指针指向新节点，更新尾指针
+
+        scanf("%d", &data); // 读取下一个数据
+    }
+
+    return head; // 返回头指针
+}
+
+// 打印单链表
+void printLinkedList(LinkList L) {
+    LinkList p = L->next; // 指针指向第一个节点
+    while (p != NULL) { // 遍历链表
+        printf("%d ", p->data); // 输出节点数据
+        p = p->next; // 指针后移
+    }
+    printf("\n");
+}
+
+// 销毁单链表
+void destroyLinkedList(LinkList L) {
+    LinkList p = L;
+    while (p != NULL) {
+        LinkList temp = p;
+        p = p->next;
+        free(temp); // 释放节点内存
+    }
+}
+

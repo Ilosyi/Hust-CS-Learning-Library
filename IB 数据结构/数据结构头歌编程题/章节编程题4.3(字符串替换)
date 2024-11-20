@@ -1,0 +1,52 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+void str_replace(char* position, int len_target, char* replacement)
+{
+    int len_replace; // 存储替换字符串的长度
+    char* tmp;       // 临时指针
+
+    len_replace = strlen(replacement); // 计算替换字符串的长度
+
+    // 替换字符串比目标字符串短，往前移动
+    if (len_replace < len_target)
+    {
+        tmp = position + len_target; // 指向目标字符串后面
+        while (*tmp) // 循环直到遇到字符串结束符
+        {
+            *(tmp - (len_target - len_replace)) = *tmp; // 左移(len_target - len_replace)个位置，实现替换
+            tmp++; // 左移一个字符
+        }
+        *(tmp - (len_target - len_replace)) = *tmp; // 移动字符串结束符
+    }
+    else // 替换比目标长，往后移动
+        if (len_replace > len_target)
+        {
+            tmp = position; // 指向目标字符串起始位置
+            while (*tmp) // 循环直到遇到字符串结束符
+                tmp++; // 移动到目标字符串的结束位置
+            while (tmp >= position + len_target) // 从后往前遍历目标字符串，直到目标字符串的末尾
+            {
+                *(tmp + (len_replace - len_target)) = *tmp; // 右移(len_replace - len_target)个位置，实现替换
+                tmp--; // 右移一个字符
+            }
+        }
+    strncpy(position, replacement, len_replace); // 用替换字符串替换目标字符串
+}
+void Replace(HString &S,HString T,HString V)
+//
+{
+/************** begin *****************/
+  int len_replace=V.length;
+  int len_target=T.length;
+  char *p=strstr(S.ch,T.ch);
+    while (p)
+    {
+        str_replace(p, len_target, V.ch);
+        p=p+ V.length;
+        p=strstr(p, T.ch);
+        S.length -= (len_target - len_replace);
+    }
+
+/**************  end  *****************/
+}

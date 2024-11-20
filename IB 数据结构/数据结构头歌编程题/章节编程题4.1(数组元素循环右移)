@@ -1,0 +1,27 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+void ShiftRightCircular(ElemType *A,int n,int k)
+{
+    while(k<0) {k+=n;}
+    k%=n;
+ for(int i=0;i<n/2;i++)
+{
+    int t=A[i];
+    A[i]=A[n-1-i];
+    A[n-1-i]=t;
+}
+
+for(int i=0;i<k/2;i++)
+{
+    int t=A[i];
+    A[i]=A[k-1-i];
+    A[k-1-i]=t;
+}
+for(int i=k;i<(n+k)/2;i++)
+{
+    int t=A[i];
+    A[i]=A[n+k-1-i];
+    A[n+k-1-i]=t;
+}
+}

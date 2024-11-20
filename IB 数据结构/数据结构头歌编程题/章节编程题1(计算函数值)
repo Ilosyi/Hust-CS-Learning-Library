@@ -1,0 +1,21 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+int suanfa(int a[],int n, int arrsize)
+{
+/**********begin**********/
+if (n > arrsize) return 0;
+	else {
+		long sum = 1;
+		for (int i = 1; i <= n; i++)
+		{
+			sum *= 2; sum *= i;
+			if (sum > 2147483647) return 0;
+			else { a[i - 1] = sum; }
+		}
+		return 1;
+	}
+
+/**********end**********/
+}

@@ -1,0 +1,65 @@
+void DeleteSqList(SqList&A, int position)
+{
+    for (int i = position; i < A.length - 1; i++)
+    {
+        A.elem[i] = A.elem[i + 1];
+    }
+    A.length--;
+}
+void BinarySqList(SqList &A, ElemType* d)
+{
+    for (int i = 0; d[i] != 0; i++)
+    {
+        int target= d[i]; int l = A.length;
+        int left = 0, right = l - 1;
+        int mid = (left + right) / 2;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            if (A.elem[mid] == target) {
+                DeleteSqList(A, mid);
+                int zuo = mid - 1, you = mid + 1;
+                while (A.elem[you++] == target)
+                {
+                    DeleteSqList(A, mid);
+                }
+                while (A.elem[zuo--] == target)
+                {
+                    DeleteSqList(A, mid);
+                }
+            }
+            else if (A.elem[mid] < target) {
+                left = mid + 1; // 目标元素在右半部分，更新左边界
+            }
+            else {
+                right = mid - 1; // 目标元素在左半部分，更新右边界
+            }
+        }
+    }
+}
+void  TriSqList(SqList &A, SqList  B, SqList  C)
+{
+    int min = B.length <= C.length ? B.length : C.length;
+    ElemType* d = (ElemType*)malloc(sizeof(ElemType) * (min+1));
+    int k = 0; int m = 0; 
+    /**********Begin**********/
+    for (int i = 0; i < B.length; i++)
+    {
+        int x = B.elem[i];
+        if (C.elem[C.length - 1] < x) break;        
+        for (int j = k; C.elem[j] <=x && j < C.length; j++)
+         {
+                if (C.elem[j] == x)
+                {
+                    d[m++] = x;
+                    k = j+1;
+                    break;
+                }
+         }
+        
+     }
+    d[m] = 0;
+    BinarySqList(A, d);
+   
+     /**********End**********/
+}

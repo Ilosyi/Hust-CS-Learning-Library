@@ -1,0 +1,23 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include<math.h>
+int insert(SqList &L,ElemType x)
+{
+/**********begin**********/
+ if (L.length >= L.listsize) {
+        L.elem = (ElemType*)realloc(L.elem, (L.listsize + LISTINCREMENT) * sizeof(ElemType));//更改内存分配
+        L.listsize += LISTINCREMENT;//更新新的内存大小
+    }
+    int i = L.length - 1;
+    //i<0不用寻找插入位置
+    while (i >= 0 && L.elem[i] > x) {
+        L.elem[i + 1] = L.elem[i];
+        i--;
+    }
+    L.elem[i + 1] = x;
+    //已有长度加一
+    L.length++;
+    return 0;
+/**********end**********/
+}

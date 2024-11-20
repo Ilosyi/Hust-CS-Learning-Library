@@ -1,0 +1,13 @@
+#include<iostream>
+#include<algorithm>
+using namespace std;
+int MidValue(int a[],int n)
+//求a的中位数
+{
+    // 请在这里补充代码，完成本关任务
+    /********** Begin *********/
+    sort(a,a+n);
+    return a[(n-1)/2];
+
+    /********** End **********/
+}

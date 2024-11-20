@@ -1,0 +1,105 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+typedef int ElemType;
+typedef  struct  Dnode
+{
+	ElemType data;
+    struct  Dnode* prior, * next;
+} ListNode;
+ListNode* BuyListNode(ElemType x);
+ListNode* ListInit();
+void Listprint(ListNode* plist);
+void adjust(ListNode* plist);
+int main()
+{
+	int n;
+	scanf("%d", &n);
+	ListNode* L = ListInit();
+	ListNode* tail = L;
+	for (int i = 1; i <= n; i++)
+	{
+		ElemType y;
+		scanf("%d", &y);
+		ListNode* p = BuyListNode(y);
+		tail->next = p;
+		p->prior = tail;
+		p->next = L;
+		tail = p;
+	}
+	L->prior = tail;
+	adjust(L);
+	Listprint(L);
+}
+ListNode* ListInit()
+{
+	ListNode* phead = BuyListNode(0);
+	phead->next = phead;
+	phead->prior = phead;
+	return phead;
+}
+// 动态申请一个结点
+ListNode* BuyListNode(ElemType x)
+{
+	ListNode* NewNode = (ListNode*)malloc(sizeof(ListNode));
+	if (NewNode == NULL)
+	{
+		printf("分配内存失败\n");
+		exit(-1);
+	}
+	NewNode->prior = NewNode->next = NULL;
+	NewNode->data = x;
+	return NewNode;
+}
+// 打印
+void Listprint(ListNode* plist)
+{
+	assert(plist);
+	ListNode* cur = plist->next;
+	while (cur != plist)
+	{
+		printf("%d ", cur->data);
+		cur = cur->next;
+	}
+	printf("\n");
+}
+void adjust(ListNode* plist)
+{
+	assert(plist);
+	if (plist->next->next != plist) {
+		ListNode* cur = plist->next; //首结点
+		int count = 0;
+		while (cur != plist)
+		{
+			count++;
+			cur = cur->next;
+		}
+		ListNode* cur2 = NULL;
+		//偶数首结点
+		if (count % 2 == 1) cur2 = plist->prior->prior;
+		if (count % 2 == 0) cur2 = plist->prior;
+		cur = plist->next;
+		ListNode* p;
+		ListNode* tail = cur->next;
+		while ((((cur->next)->next) != plist) && (cur->next) != plist)
+		{
+			p = cur->next;
+			cur->next = p->next;
+			(cur->next)->prior = cur;
+			cur = cur->next;
+			p->prior = cur->next;//偶数的前一个是奇数的后一个
+		}
+		cur2->prior = cur;
+		cur->next = cur2;
+		ListNode* t = tail;
+		while (t->prior != cur)
+		{
+			(t->prior)->next = t;
+			t = t->prior;
+		}
+		tail->next = plist;
+		plist->prior = tail;
+	}
+}
+	

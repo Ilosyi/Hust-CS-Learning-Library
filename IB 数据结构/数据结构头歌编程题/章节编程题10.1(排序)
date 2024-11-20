@@ -1,0 +1,23 @@
+void sort(int a[],int n,int k)
+//将a中元素递增排序
+{
+    // 请在这里补充代码，完成本关任务
+    /********** Begin *********/
+    int b[k+1]={0};
+    for(int i=0;i<n;i++)
+    {
+        b[a[i]]++;
+    }
+    int x=0;
+    for(int i=0;i<=k;i++)
+    {
+        if(b[i])
+        {
+            for(int j=0;j<b[i];j++)
+            {
+                a[x++]=i;
+            }
+        }
+    }
+    /********** End **********/
+}
