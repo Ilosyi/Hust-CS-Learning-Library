@@ -1,0 +1,121 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+// 定义学生结构体
+struct Student {
+    char name[50];
+    int score;
+};
+// 函数原型
+void inputScores(struct Student** students, int n);
+void sortScores(struct Student* students, int n);
+void outputScores(struct Student* students, int n);
+void searchScore(struct Student* students, int n, int score);
+
+int main() {
+    int choice = 5;
+    int n;
+    int searchValue;
+    struct Student* students = NULL;
+    while (choice != 0) {
+        scanf("%d", &choice);
+        switch (choice) {
+        case 1:
+            scanf("%d", &n);
+            students = (struct Student*)malloc(n * sizeof(struct Student));//分配内存空间
+            inputScores(&students, n);
+            break;
+        case 2:
+            sortScores(students, n);
+            break;
+        case 3:
+            outputScores(students, n);
+            break;
+        case 4:
+            scanf("%d", &searchValue);
+            searchScore(students, n, searchValue);
+            break;
+        case 0:
+            return 0;
+            break;
+        }
+    }
+    // 释放动态分配的内存
+    free(students);
+    return 0;
+}
+
+// 输入学生姓名和成绩
+//指向结构数组的指针
+void inputScores(struct Student** students, int n) {
+    for (int i = 0; i < n; i++) {
+        scanf("%s", (*students)[i].name, 20);
+        scanf("%d", &(*students)[i].score);
+    }
+    printf("%d records were input!\n", n);
+};
+// 冒泡排序，按成绩排序
+void sortScores(struct Student* students, int n)
+{
+    struct Student t;
+    for (int i = 0; i < n - 1; i++)
+    {
+        for (int j = 0; j < n - 1 - i; j++)
+        {
+            if (students[j].score < students[j + 1].score)
+            {
+                // 交换成绩和姓名
+                t = students[j];
+                students[j] = students[j + 1];
+                students[j + 1] = t;
+            }
+        }
+    }
+    printf("Reorder finished!\n");
+}
+// 输出学生姓名和成绩
+void outputScores(struct Student* students, int n)
+{
+    for (int i = 0; i < n; i++)
+    {
+        printf("%s %d\n", students[i].name, students[i].score);
+    }
+}
+//查找成绩
+void searchScore(struct Student* students, int n, int score) {
+    int low = 0, high = n - 1, mid;
+    int found = 0;
+    while (low <= high) {
+        mid = (low + high) / 2;
+
+        if (students[mid].score == score) {
+            printf("%s %d\n", students[mid].name, score);
+            found = 1;
+
+            // Continue searching in both directions for the same score
+            int i = mid - 1;
+            while (i >= 0 && students[i].score == score) {
+                printf("%s %d\n", students[i].name, score);
+                i--;
+            }
+
+            i = mid + 1;
+            while (i < n && students[i].score == score) {
+                printf("%s %d\n", students[i].name, score);
+                i++;
+            }
+
+            break;
+        }
+        else if (students[mid].score > score) {
+            low = mid + 1;
+        }
+        else {
+            high = mid - 1;
+        }
+    }
+    if (!found) {
+        printf("not found!\n");
+    }
+}

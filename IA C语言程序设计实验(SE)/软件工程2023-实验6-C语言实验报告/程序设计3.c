@@ -1,0 +1,30 @@
+void rotate(int input[20][20], int output[20][20], int n, int m) {
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            output[n-1-j][i] = input[i][j];
+        }
+    }
+}
+int main() {
+    int n, m;
+    scanf("%d %d", &m, &n);
+    int input[20][20] = { 0 };
+    int output[20][20] = { 0 };
+    // 输入图像矩阵
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            scanf("%d", &input[i][j]);
+        }
+    }
+    rotate(input,output, n, m);
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            printf("%d", output[i][j]);
+            if (j < m - 1) {
+                printf(" ");
+            }
+        }
+        printf("\n");
+    }
+    return 0;
+}

@@ -1,0 +1,68 @@
+#include <stdio.h>
+#include <stdbool.h>
+#define MAX_N 20
+
+int N;
+int board[MAX_N][MAX_N];
+
+bool isSafe(int row, int col) {
+
+    for (int i = 0; i < row; i++) {
+        if (board[i][col]) {
+            return false;
+        }
+    }
+
+
+    for (int i = row, j = col; i >= 0 && j >= 0; i--, j--) {
+        if (board[i][j]) {
+            return false;
+        }
+    }
+
+    for (int i = row, j = col; i >= 0 && j < N; i--, j++) {
+        if (board[i][j]) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+int solveNQueens(int row) {
+
+    if (row == N) {
+        return 1;
+    }
+    int count = 0;
+    for (int col = 0; col < N; col++) {
+        if (isSafe(row, col)) {
+            board[row][col] = 1;
+            count += solveNQueens(row + 1);
+            board[row][col] = 0;
+        }
+    }
+    
+    return count;
+}
+
+int main2() {
+    scanf_s("%d", &N);
+
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            board[i][j] = 0;
+        }
+    }
+
+    int solutions = solveNQueens(0);
+
+    if (solutions == 0) {
+        printf("无解\n");
+    }
+    else {
+        printf("%d\n", solutions);
+    }
+
+    return 0;
+}
