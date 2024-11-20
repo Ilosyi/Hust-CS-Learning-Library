@@ -1,0 +1,83 @@
+#include <stdio.h>
+#include <math.h>
+
+int shuixianhua(int n) {
+    int t = n;    
+    int sum = 0;      
+    int d = 0;
+    while (t != 0)
+     {
+        d++;       
+        t /= 10;
+    }
+    t = n;
+    while (t != 0) 
+    {      int a = t % 10;
+        sum += pow(a, d);
+        t /= 10;                
+    }
+    if (sum == n) 
+        return 1;   
+    else 
+        return 0;    
+}
+int main() 
+{
+    int k;
+    while (1)
+    {
+
+        scanf("%d", &k);
+        if (k == 0) {
+            break;
+        }
+        int count = 0;
+
+            switch (k)
+             {
+        case 3:
+            printf("%d位的水仙花数共有",k);
+            break;
+        case 4:
+            printf("%d位的四叶玫瑰数共有",k);
+            break;
+        case 5:
+            printf("%d位的五角星数共有",k);
+            break;
+        case 6:
+            printf("%d位的六合数共有",k);
+            break;
+        case 7:
+            printf("%d位的北斗星数共有",k);
+            break;
+        case 8:
+            printf("%d位的八仙数共有",k);
+            break;
+        default:
+            printf("%d位的数共有",k);
+            break;
+             }
+        for (int i = pow(10, k - 1); i < pow(10, k); i++)
+        {
+            if (shuixianhua(i))
+            {
+                count++;
+            }
+        }
+        printf("%d个",count);
+        for (int m = pow(10, k - 1); m < pow(10, k); m++) 
+        {
+            if (shuixianhua(m))
+            {
+                count--;
+                printf("%d", m);
+                if(count!=0)
+                {
+                    printf(",");
+                }
+            }
+        }
+        printf("\n");
+    }
+        return 0;
+    }

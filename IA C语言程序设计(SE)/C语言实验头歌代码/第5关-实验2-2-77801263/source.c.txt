@@ -1,0 +1,34 @@
+ #include <stdio.h>
+
+int main() {
+    int N;
+
+    scanf("%d", &N);
+
+    for (int i = 0; i <= N; i++)
+    {
+        for (int a = 1; a <= N; a++)
+        {
+            printf(" ");
+        }
+        for (int space = 1; space <= N - i; space++)
+        {
+            printf("  ");
+        }
+
+        int coef = 1;
+        for (int j = 0; j <= i; j++) {
+            printf("%d", coef);
+            if (coef < 10)
+                printf("   ");
+            if (coef >= 10)
+                printf("  ");
+
+            coef = coef * (i - j) / (j + 1);
+        }
+
+        printf("\n");
+    }
+
+    return 0;
+}

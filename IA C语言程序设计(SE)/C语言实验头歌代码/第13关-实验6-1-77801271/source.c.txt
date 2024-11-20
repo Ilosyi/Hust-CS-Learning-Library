@@ -1,0 +1,21 @@
+ #include<stdio.h> 
+ #include <stdio.h>
+
+int main() {
+    int num;
+    scanf("%d", &num);
+    //声明一个指向无符号字符的指针 ptr，用于访问每个字节。
+    //将 num 的地址强制转换为 unsigned char* 类型，以允许以字节为单位访问变量。
+    unsigned char* p = (unsigned char*)&num + sizeof(int) - 1;
+    //计算长整型变量的字节大小，并减去1，以获得指向最高字节的指针。
+    //循环遍历 long int 的每个字节
+    for (int i = 0; i < sizeof(int); i++) {
+        //00001111==位掩码0X0F
+        printf("%X", (*p >> 4) & 0x0F);
+        printf("%X", *p & 0x0F);//递减指针 ptr，以访问下一个字节。
+        p--;
+    }
+        printf("\n");
+
+    return 0;
+}

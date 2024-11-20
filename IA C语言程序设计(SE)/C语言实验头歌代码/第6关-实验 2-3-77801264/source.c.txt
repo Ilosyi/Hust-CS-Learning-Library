@@ -1,0 +1,15 @@
+#include <stdio.h>
+#include <math.h>
+
+int main()
+ {
+    for (int i = 100; i < 1000; i++)
+     {
+        int a = pow(i, 2);
+        if (a % 1000 == i) 
+        {
+            printf("%d\n", i);
+        }
+    }
+    return 0;
+}

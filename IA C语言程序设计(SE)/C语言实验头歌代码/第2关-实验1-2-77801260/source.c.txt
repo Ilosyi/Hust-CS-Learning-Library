@@ -1,0 +1,19 @@
+#include <stdio.h>
+#include <stdint.h>
+int main() {
+    unsigned short x;
+    unsigned short m, n;
+    scanf("%hx%hx%hx", &x,&m,&n);
+    if(m>15||m<0||n<1||n>16-m)
+    {
+        printf("error");
+    }
+    else{
+
+     unsigned short a = (x>>(m-1));
+     unsigned short result = (a<<(15-n));
+
+    printf("%hx", result);}
+
+    return 0;
+}

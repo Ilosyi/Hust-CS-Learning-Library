@@ -1,0 +1,67 @@
+ #include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+
+struct Student                  //定义学生结构体
+{
+	char ID[10];
+	char name[20];
+	int English, math, physics, Cprogramming;
+	float ave;
+	struct Student* next;
+};
+typedef struct Student stu;  //自定义名
+
+stu* head = NULL;   //头指针
+
+//输入学生信息
+void addStudent()
+{
+	int n;
+	scanf("%d", &n);
+	for (int i = 0; i < n; i++) {
+		stu* student = (stu*)malloc(sizeof(stu)); //分配空间
+		scanf("%s", student->ID, 10);
+		scanf("%s", student->name);
+		scanf("%d %d %d %d",
+			&student->English, &student->math,
+			&student->physics, &student->Cprogramming,10,20);   //输入成绩
+
+		student->ave = (student->English + student->math +
+			student->physics + student->Cprogramming) / 4.0;//计算平均值
+		student->next = NULL;      //设置为空
+		if (head == NULL)
+		{
+			head = student;        //head指向第一位
+		}
+		else
+		{
+			stu* current = head;
+			while (current->next != NULL)
+			{
+				current = current->next;      //向下查找到结尾
+			}
+			current->next = student;   //让上一个结构体指向本个
+		}
+	}
+	printf("完成了%d位同学的成绩输入。", n);
+}
+int main()
+{
+	int x;
+	scanf("%d", &x);
+	if (x == 1) {
+		addStudent();
+
+		stu* current = head;
+		while (current != NULL) {
+			stu* next = current->next;
+			free(current);
+			current = next;
+		}
+	}
+	else {
+		return 0;
+	}
+	return 0;
+}

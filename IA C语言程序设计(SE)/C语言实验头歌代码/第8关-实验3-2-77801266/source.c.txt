@@ -1,0 +1,40 @@
+#include <stdio.h>
+
+int wanshu(int n)
+ {
+    int sum = 0;
+    for (int i = 1; i <= n / 2; i++)
+    {
+        if (n % i == 0) {
+            sum += i;
+        }
+    }
+    if (sum == n)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+int main() {
+    for (int num = 1; num <= 10000; num++)
+    {
+        if (wanshu(num))
+        {
+            printf("%d=", num);
+            for (int i = 1; i <=num / 2; i++) {
+                if (num % i == 0) {
+                    printf("%d", i);
+                    if (i != num / 2) {
+                        printf("+");
+                    }
+                }
+            }
+            printf("\n");
+        }
+    }
+    return 0;
+}
