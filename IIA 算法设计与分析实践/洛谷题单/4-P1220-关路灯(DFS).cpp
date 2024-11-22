@@ -26,7 +26,7 @@ void dfs(int now) {
     // 向右探索
     for (int i = now + 1; i <= n; i++) {
         if (!visited[i]) { // 找到未关闭的灯
-            hasNext = true;
+            
             visited[i] = true;
 
             // 更新当前能量和剩余功率
@@ -40,13 +40,16 @@ void dfs(int now) {
             total_power += lamps[i].power;
             current_energy -= distance * total_power;
             visited[i] = false;
+            hasNext = true;
+            break;
         }
     }
 
     // 向左探索
-    for (int i = now - 1; i >= 1; i--) {
+    for (int i = now - 1; i >= 1; i--) 
+    {
         if (!visited[i]) { // 找到未关闭的灯
-			hasNext = true;//需要继续探索
+			
             visited[i] = true;
 
             // 更新当前能量和剩余功率
@@ -60,6 +63,9 @@ void dfs(int now) {
             total_power += lamps[i].power;
             current_energy -= distance * total_power;
             visited[i] = false;
+
+            hasNext = true;//需要继续探索
+            break;
         }
     }
 
