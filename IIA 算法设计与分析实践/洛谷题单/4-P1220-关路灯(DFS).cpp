@@ -41,7 +41,7 @@ void dfs(int now) {
             current_energy -= distance * total_power;
             visited[i] = false;
             hasNext = true;
-            break;
+            break;//注意break!
         }
     }
 
@@ -65,7 +65,7 @@ void dfs(int now) {
             visited[i] = false;
 
             hasNext = true;//需要继续探索
-            break;
+            break; // 注意break!
         }
     }
 
