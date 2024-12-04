@@ -29,20 +29,20 @@ FEATURES = [
     "羽毛", "喙", "下蛋",  # 规则 2
     "体型小", "柔软皮肤", "锋利牙齿和爪子",  # 规则 3
     "体型多样", "毛发", "锋利牙齿", "人类伴侣",  # 规则 4
-    "毛发",  # 规则 5
+    # 规则 5
     "奶",  # 规则 6
     # 规则 7
     "会飞", "会下蛋",  # 规则 8
     "吃肉",  # 规则 9
     "犬齿", "爪", "眼盯前方",  # 规则 10
-    "哺乳动物", "蹄",  # 规则 11
+    "哺乳动物",  # 规则 11
     "反刍动物",  # 规则 12
     "食肉动物", "黄褐色", "暗斑点",  # 规则 13
     "黄褐色", "黑色条纹",  # 规则 14
     "长脖子", "长腿", "暗斑点",  # 规则 15
     "有蹄类动物", "黑色条纹",  # 规则 16
     "鸟", "长脖子", "长腿", "不会飞", "黑白二色",  # 规则 17
-    "会游泳","黑白二色",  # 规则 18
+    "会游泳",  # 规则 18
     "善飞",  # 规则 19
 ]
 
@@ -131,8 +131,10 @@ class AnimalRecognitionApp(QtWidgets.QWidget):
             sender.setText("否")
 
     def on_recognize(self):
+        selected_features = {}
         # 获取用户选择的特征
-        selected_features = {feature: button.isChecked() for feature, button in self.featureButtons.items()}
+        for feature, button in self.featureButtons.items():
+            selected_features[feature] = button.isChecked()
 
         # 显示推理过程
         animal, inference_process = self.infer_animal(selected_features)
