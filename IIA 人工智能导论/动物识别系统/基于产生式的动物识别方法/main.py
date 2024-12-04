@@ -9,7 +9,7 @@ RULES = [
     {"if": {"毛发": True}, "then": "哺乳动物"},
     {"if": {"奶": True}, "then": "哺乳动物"},
     {"if": {"羽毛": True}, "then": "鸟"},
-    {"if": {"会飞": True, "会下蛋": True}, "then": "鸟"},
+    {"if": {"会飞": True, "下蛋": True}, "then": "鸟"},
     {"if": {"吃肉": True}, "then": "食肉动物"},
     {"if": {"犬齿": True, "爪": True, "眼盯前方": True}, "then": "食肉动物"},
     {"if": {"哺乳动物": True, "蹄": True}, "then": "有蹄类动物"},
@@ -32,7 +32,7 @@ FEATURES = [
     # 规则 5
     "奶",  # 规则 6
     # 规则 7
-    "会飞", "会下蛋",  # 规则 8
+    "会飞",# 规则 8
     "吃肉",  # 规则 9
     "犬齿", "爪", "眼盯前方",  # 规则 10
     "哺乳动物",  # 规则 11
@@ -170,6 +170,7 @@ class AnimalRecognitionApp(QtWidgets.QWidget):
             return matched_animal, inference_process
         else:
             return "未知动物", ["未匹配任何规则"]
+
 
 
 if __name__ == '__main__':
