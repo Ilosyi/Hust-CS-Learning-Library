@@ -210,7 +210,9 @@ int byteXor(int x, int y, int n)
  */
 int logicalAnd(int x, int y)
 {
-    return 2;
+	//思路：利用!!将x和y转换为0或1，然后进行逻辑与操作
+
+    return (!!x) & (!!y);//
 }
 /*
  *   logicalOr - x || y
@@ -220,7 +222,7 @@ int logicalAnd(int x, int y)
  */
 int logicalOr(int x, int y)
 {
-    return 2;
+	return (!!x) | (!!y);
 }
 /*
  * rotateLeft - 将 x 向左旋转 n 位
@@ -230,9 +232,11 @@ int logicalOr(int x, int y)
  *   最大操作数：25
  *   难度：3
  */
-int rotateLeft(int x, int n)
-{
-    return 2;
+int rotateLeft(int x, int n) {
+	int mask = ((~0) << (32 - n))&x;
+    int mask2 =( mask >> (32 - n) )&(~(~0<<n));//前32-n位1需要变成0
+
+	return (x << n) |mask2;
 }
 /*
  * parityCheck - 如果 x 包含奇数个 1 则返回 1
