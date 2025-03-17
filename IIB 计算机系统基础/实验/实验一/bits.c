@@ -233,8 +233,9 @@ int logicalOr(int x, int y)
  *   难度：3
  */
 int rotateLeft(int x, int n) {
-	int mask = ((~0) << (32 - n))&x;
-    int mask2 =( mask >> (32 - n) )&(~(~0<<n));//前32-n位1需要变成0
+    int m = (~n) + 1;
+	int mask = ((~0) << (32 +m))&x;
+    int mask2 =( mask >> (32 + m) )&(~(~0<<n));//前32-n位1需要变成0
 
 	return (x << n) |mask2;
 }
@@ -247,7 +248,12 @@ int rotateLeft(int x, int n) {
  */
 int parityCheck(int x)
 {
-    return 2;
+	x = x ^ (x >> 16);
+	x = x ^ (x >> 8);
+	x = x ^ (x >> 4);
+	x = x ^ (x >> 2);
+	x = x ^ (x >> 1);
+	return x & 1;
 }
 /*
  * mul2OK - 确定是否可以计算 2*x 而不溢出
@@ -260,7 +266,11 @@ int parityCheck(int x)
  */
 int mul2OK(int x)
 {
-    return 2;
+    int s1 = (x >> 31)&1;//小心符号位
+	int s2 = ((x << 1) >> 31) &1;
+	//判断最高位和次高位是否相同
+	return (s1 ^ s2)^1;
+   // return 1^((((x >> 31) & 1) ^ (x >> 30 & 1)));
 }
 /*
  * mult3div2 - 乘以 3/2 并向 0 舍入，
@@ -273,10 +283,12 @@ int mul2OK(int x)
  *   最大操作数：12
  *   难度：2
  */
-int mult3div2(int x)
-{
-    return 2;
+int mult3div2(int x) {
+    int m1 = x + (x << 1);   
+	int m2 = (m1 >> 31) & (m1 & 1); //如果是负数且为奇数需要加1
+    return (m1 + m2) >> 1;
 }
+
 /*
  * subOK - 确定是否可以计算 x-y 而不溢出
  *   示例：subOK(0x80000000,0x80000000) = 1,
@@ -285,10 +297,11 @@ int mult3div2(int x)
  *   最大操作数：20
  *   难度：3
  */
-int subOK(int x, int y)
-{
-    return 2;
+int subOK(int x, int y) {
+    
+	return !(((x >> 31) ^ (y >> 31)) & ((x >> 31) ^ ((x+~y+1) >> 31)));
 }
+
 /*
  * absVal - x 的绝对值
  *   示例：absVal(-1) = 1.
@@ -310,10 +323,12 @@ int absVal(int x)
  *   最大操作数：10
  *   难度：2
  */
-unsigned float_abs(unsigned uf)
-{
-    return 2;
+unsigned float_abs(unsigned uf) {
+    if ((uf & 0x7FFFFFFF) > 0x7F800000) // 正确检测 NaN
+        return uf;
+    return uf & 0x7FFFFFFF; // 清除符号位
 }
+
 /*
  * float_f2i - 返回表达式 (int) f 的位级等效值
  *   用于浮点参数 f。
@@ -327,5 +342,26 @@ unsigned float_abs(unsigned uf)
  */
 int float_f2i(unsigned uf)
 {
-    return 2;
+
+    int sign = uf >> 31;//提取符号位
+    int exp = ((uf >> 23) & 0xFF) - 127;//提取指数位，减去偏移
+    unsigned frac = uf & 0x7FFFFF;//提取尾数位，unsigned类型方便处理
+    frac = frac | 0x800000;//隐藏位1
+    //C89标准，变量声明必须在最前面
+    if ((uf & 0x7F800000) == 0x7F800000) // NaN和无穷大
+        return 0x80000000u;
+
+    if (exp < 0) return 0;//指数小于0，返回0
+    if (exp >= 31) return 0x80000000u;//大于int范围，返回0x80000000u
+
+    if (exp > 23) frac <<= (exp - 23);//指数大于23，左移（原来的1在24位即2^23）
+    else
+    {
+        frac >>= (23 - exp);
+        if (sign)//负数，需要将前导1去掉
+            frac = frac & (~(~0 << (24 - exp)));
+    }//如何避免前导1？
+    if (sign) return -(int)frac;//如果是负数，返回负数
+    return frac;//返回正数
+    //共消耗21个操作符
 }
