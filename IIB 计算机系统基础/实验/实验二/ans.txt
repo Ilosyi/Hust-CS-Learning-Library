@@ -1,3 +1,4 @@
 When I get angry, Mr. Bigglesworth gets upset.
 1 2 4 8 16 32
-0 x 358
+0 x 358(答案不唯一)
+108 2(答案不唯一)
