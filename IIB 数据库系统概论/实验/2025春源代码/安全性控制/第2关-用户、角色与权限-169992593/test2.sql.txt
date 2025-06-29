@@ -1,0 +1,17 @@
+#(1) 创建角色 client_manager 和 fund_manager
+CREATE ROLE client_manager;
+CREATE ROLE fund_manager;
+
+#(2) 授予 client_manager 对 client 表的 select, insert, update 权限
+GRANT SELECT, INSERT, UPDATE ON client TO client_manager;
+#(3) 授予 client_manager 对 bank_card 表的查询权限（排除 b_balance 列）
+GRANT SELECT (b_number, b_type, b_c_id) ON bank_card TO client_manager;
+
+#(4) 授予 fund_manager 对 fund 表的 select, insert, update 权限
+GRANT SELECT, INSERT, UPDATE ON fund TO fund_manager;
+
+#(5) 将 client_manager 的权限授予用户 tom 和 jerry
+GRANT client_manager TO tom, jerry;
+
+#(6) 将 fund_manager 权限授予用户 Cindy
+GRANT fund_manager TO Cindy;
