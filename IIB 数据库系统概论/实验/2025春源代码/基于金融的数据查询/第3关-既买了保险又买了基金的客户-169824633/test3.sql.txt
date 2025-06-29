@@ -1,0 +1,20 @@
+-- 3) 查询既买了保险又买了基金的客户的名称、邮箱和电话。结果依c_id排序
+-- 请用一条SQL语句实现该查询：
+
+
+SELECT c.c_name, c.c_mail, c.c_phone
+FROM client c
+WHERE c.c_id IN (
+    SELECT pro_c_id 
+    FROM property 
+    WHERE pro_type = 2  -- 买了保险的客户
+)
+AND c.c_id IN (
+    SELECT pro_c_id 
+    FROM property 
+    WHERE pro_type = 3  -- 买了基金的客户
+)
+ORDER BY c.c_id;
+
+
+/*  end  of  your code  */

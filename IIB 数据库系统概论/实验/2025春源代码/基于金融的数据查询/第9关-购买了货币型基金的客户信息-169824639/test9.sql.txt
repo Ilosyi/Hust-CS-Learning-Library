@@ -1,0 +1,24 @@
+-- 9) 查询购买了货币型(f_type='货币型')基金的用户的名称、电话号、邮箱。
+--   请用一条SQL语句实现该查询：
+
+
+
+
+SELECT c.c_name ,
+       c.c_phone,
+       c.c_mail 
+FROM client c
+WHERE c.c_id IN (
+    SELECT p.pro_c_id
+    FROM property p
+    WHERE p.pro_type = 3
+    AND p.pro_pif_id IN (
+        SELECT f.f_id
+        FROM fund f
+        WHERE f.f_type = '货币型'
+    )
+)
+ORDER BY c.c_id;
+
+
+/*  end  of  your code  */

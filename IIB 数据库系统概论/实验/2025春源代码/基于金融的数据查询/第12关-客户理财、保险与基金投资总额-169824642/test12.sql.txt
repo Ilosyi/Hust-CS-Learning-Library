@@ -1,0 +1,38 @@
+ -- 12) 综合客户表(client)、资产表(property)、理财产品表(finances_product)、保险表(insurance)和
+ --     基金表(fund)，列出客户的名称、身份证号以及投资总金额（即投资本金，
+ --     每笔投资金额=商品数量*该产品每份金额)，注意投资金额按类型需要查询不同的表，
+ --     投资总金额是客户购买的各类资产(理财,保险,基金)投资金额的总和，总金额命名为total_amount。
+ --     查询结果按总金额降序排序。
+ -- 请用一条SQL语句实现该查询：
+SELECT 
+    c.c_name ,
+    c.c_id_card,
+    SUM(
+        CASE 
+            WHEN p.pro_type = 1 THEN p.pro_quantity * fp.p_amount  -- 理财产品
+            WHEN p.pro_type = 2 THEN p.pro_quantity * i.i_amount   -- 保险产品
+            WHEN p.pro_type = 3 THEN p.pro_quantity * f.f_amount   -- 基金产品
+            ELSE 0
+        END
+    ) AS total_amount
+FROM 
+    client c
+LEFT JOIN 
+    property p ON c.c_id = p.pro_c_id
+LEFT JOIN 
+    finances_product fp ON p.pro_type = 1 AND p.pro_pif_id = fp.p_id
+LEFT JOIN 
+    insurance i ON p.pro_type = 2 AND p.pro_pif_id = i.i_id
+LEFT JOIN 
+    fund f ON p.pro_type = 3 AND p.pro_pif_id = f.f_id
+GROUP BY c.c_id
+ORDER BY total_amount DESC;
+
+
+
+
+
+
+
+
+/*  end  of  your code  */ 

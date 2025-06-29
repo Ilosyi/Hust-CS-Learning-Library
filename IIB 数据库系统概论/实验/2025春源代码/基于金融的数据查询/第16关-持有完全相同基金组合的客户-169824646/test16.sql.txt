@@ -1,0 +1,82 @@
+-- 16) 查询持有相同基金组合的客户对，如编号为A的客户持有的基金，编号为B的客户也持有，反过来，编号为B的客户持有的基金，编号为A的客户也持有，则(A,B)即为持有相同基金组合的二元组，请列出这样的客户对。为避免过多的重复，如果(1,2)为满足条件的元组，则不必显示(2,1)，即只显示编号小者在前的那一对，这一组客户编号分别命名为c_id1,c_id2。
+
+-- 请用一条SQL语句实现该查询：
+
+
+-- 创建一个名为 client_funds 的公共表表达式（CTE）
+-- 这个 CTE 用于计算每个客户投资的基金组合
+WITH client_funds AS (
+    -- 从 property 表中选择客户 ID 和该客户投资的基金组合
+    SELECT 
+        pro_c_id,
+        -- GROUP_CONCAT 函数用于将分组内的多行数据连接成一个字符串
+        -- DISTINCT 确保连接的基金 ID 不重复
+        -- ORDER BY pro_pif_id 按基金 ID 排序，保证结果的一致性
+        GROUP_CONCAT(DISTINCT pro_pif_id ORDER BY pro_pif_id) AS fund_combination
+    FROM 
+        property
+    WHERE 
+        -- 只筛选 pro_type 为 3 的记录，可理解为只关注基金投资
+        pro_type = 3
+    GROUP BY 
+        -- 按客户 ID 分组，以便统计每个客户的基金组合
+        pro_c_id
+)
+-- 主查询部分，用于找出具有相同基金组合的不同客户对
+SELECT 
+    -- 第一个客户的 ID
+    c1.pro_c_id AS c_id1,
+    -- 第二个客户的 ID
+    c2.pro_c_id AS c_id2
+FROM 
+    -- 从 CTE client_funds 中选择记录，别名为 c1
+    client_funds c1
+JOIN 
+    -- 将 CTE client_funds 进行自连接，别名为 c2
+    client_funds c2 ON c1.pro_c_id < c2.pro_c_id
+WHERE 
+    -- 筛选条件：只有当两个客户的基金组合相同时才会被选中
+    c1.fund_combination = c2.fund_combination;
+
+
+
+
+/*  end  of  your code  */
+/*
+SELECT DISTINCT 
+    p1.pro_c_id AS c_id1,
+    p2.pro_c_id AS c_id2
+FROM 
+    property p1
+JOIN 
+    property p2 ON p1.pro_c_id < p2.pro_c_id
+WHERE 
+    p1.pro_type = 3 AND p2.pro_type = 3  -- 假设3代表基金类型
+    AND NOT EXISTS (
+        SELECT pro_pif_id 
+        FROM property p3 
+        WHERE p3.pro_c_id = p1.pro_c_id 
+        AND p3.pro_type = 3
+        AND NOT EXISTS (
+            SELECT 1 
+            FROM property p4 
+            WHERE p4.pro_c_id = p2.pro_c_id 
+            AND p4.pro_type = 3 
+            AND p4.pro_pif_id = p3.pro_pif_id
+        )
+    )
+    AND NOT EXISTS (
+        SELECT pro_pif_id 
+        FROM property p5 
+        WHERE p5.pro_c_id = p2.pro_c_id 
+        AND p5.pro_type = 3
+        AND NOT EXISTS (
+            SELECT 1 
+            FROM property p6 
+            WHERE p6.pro_c_id = p1.pro_c_id 
+            AND p6.pro_type = 3 
+            AND p6.pro_pif_id = p5.pro_pif_id
+        )
+    );
+
+*/

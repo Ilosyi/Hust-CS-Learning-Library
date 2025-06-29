@@ -1,0 +1,19 @@
+-- 7) 查询身份证隶属武汉市没有买过任何理财产品的客户的名称、电话号、邮箱。
+--    请用一条SQL语句实现该查询：
+
+SELECT c.c_name, 
+       c.c_phone, 
+       c.c_mail 
+FROM client c
+WHERE c.c_id_card LIKE '4201%'  -- 身份证前6位为4201（武汉）
+AND NOT EXISTS (
+    SELECT p.pro_c_id
+    FROM property p
+    WHERE p.pro_c_id = c.c_id
+    AND p.pro_type = 1  -- 理财产品类型为1
+)
+ORDER BY c.c_id;
+
+
+
+/*  end  of  your code  */

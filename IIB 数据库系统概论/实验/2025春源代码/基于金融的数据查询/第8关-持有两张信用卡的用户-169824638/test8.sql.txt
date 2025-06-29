@@ -1,0 +1,20 @@
+-- 8) 查询持有两张(含）以上信用卡的用户的名称、身份证号、手机号。
+--    请用一条SQL语句实现该查询：
+
+
+
+SELECT c.c_name ,
+       c.c_id_card ,
+       c.c_phone 
+FROM client c
+WHERE c.c_id IN (
+    SELECT b_c_id
+    FROM bank_card
+    WHERE b_type = '信用卡'
+    GROUP BY b_c_id
+    HAVING COUNT(*) >= 2
+)
+ORDER BY c.c_id;
+
+
+/*  end  of  your code  */

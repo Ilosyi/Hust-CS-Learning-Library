@@ -1,0 +1,30 @@
+-- 19) 以日历表格式列出2022年2月每周每日基金购买总金额，输出格式如下：
+-- week_of_trading Monday Tuesday Wednesday Thursday Friday
+--               1
+--               2    
+--               3
+--               4
+--   请用一条SQL语句实现该查询：
+SELECT 
+    WEEK(pro_purchase_time, 1) - WEEK('2022-02-07', 1) + 1 AS week_of_trading,
+    -- 返回 pro_purchase_time 的 ISO 周次（周一是每周第一天）
+    SUM(IF(WEEKDAY(pro_purchase_time) = 0, pro_quantity * f_amount, NULL)) AS Monday,
+    SUM(IF(WEEKDAY(pro_purchase_time) = 1, pro_quantity * f_amount, NULL)) AS Tuesday,
+    SUM(IF(WEEKDAY(pro_purchase_time) = 2, pro_quantity * f_amount, NULL)) AS Wednesday,
+    SUM(IF(WEEKDAY(pro_purchase_time) = 3, pro_quantity * f_amount, NULL)) AS Thursday,
+    SUM(IF(WEEKDAY(pro_purchase_time) = 4, pro_quantity * f_amount, NULL)) AS Friday
+FROM 
+    property p
+JOIN 
+    fund f ON p.pro_pif_id = f.f_id
+WHERE 
+    p.pro_type = 3
+    AND p.pro_purchase_time BETWEEN '2022-02-07' AND '2022-02-28'
+    AND WEEKDAY(p.pro_purchase_time) < 5
+GROUP BY 
+    WEEK(pro_purchase_time, 1) - WEEK('2022-02-07', 1) + 1
+ORDER BY 
+    week_of_trading;
+
+
+/*  end  of  your code  */

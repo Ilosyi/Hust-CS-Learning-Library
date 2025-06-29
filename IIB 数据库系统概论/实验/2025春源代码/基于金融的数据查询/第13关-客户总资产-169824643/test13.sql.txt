@@ -1,0 +1,82 @@
+-- 13) 综合客户表(client)、资产表(property)、理财产品表(finances_product)、
+--     保险表(insurance)、基金表(fund)和投资资产表(property)，
+--     列出所有客户的编号、名称和总资产，总资产命名为total_property。
+--     总资产为储蓄卡余额，投资总额，投资总收益的和，再扣除信用卡透支的金额
+--     (信用卡余额即为透支金额)。客户总资产包括被冻结的资产。
+--    请用一条SQL语句实现该查询：
+
+
+SELECT 
+    c.c_id,
+    c.c_name,
+    (
+        COALESCE(储蓄卡余额, 0) + 
+        COALESCE(投资总额, 0) + 
+        COALESCE(投资总收益, 0) - 
+        COALESCE(信用卡透支, 0)
+    ) AS total_property
+FROM 
+    client c
+LEFT JOIN (
+    -- 计算储蓄卡总余额
+    SELECT 
+        b_c_id,
+        SUM(b_balance) AS 储蓄卡余额
+    FROM 
+        bank_card
+    WHERE 
+        b_type = '储蓄卡'
+    GROUP BY 
+        b_c_id
+) AS savings ON c.c_id = savings.b_c_id
+LEFT JOIN (
+    -- 计算投资总额(本金)
+    SELECT 
+        pro_c_id,
+        SUM(
+            CASE 
+                WHEN pro_type = 1 THEN pro_quantity * p_amount  -- 理财
+                WHEN pro_type = 2 THEN pro_quantity * i_amount  -- 保险
+                WHEN pro_type = 3 THEN pro_quantity * f_amount  -- 基金
+                ELSE 0
+            END
+        ) AS 投资总额
+    FROM 
+        property p
+    LEFT JOIN finances_product fp ON p.pro_type = 1 AND p.pro_pif_id = fp.p_id
+    LEFT JOIN insurance i ON p.pro_type = 2 AND p.pro_pif_id = i.i_id
+    LEFT JOIN fund f ON p.pro_type = 3 AND p.pro_pif_id = f.f_id
+    GROUP BY 
+        pro_c_id
+) AS investments ON c.c_id = investments.pro_c_id
+LEFT JOIN (
+    -- 计算投资总收益
+    SELECT 
+        pro_c_id,
+        SUM(pro_income) AS 投资总收益
+    FROM 
+        property
+    GROUP BY 
+        pro_c_id
+) AS income ON c.c_id = income.pro_c_id
+LEFT JOIN (
+    -- 计算信用卡透支总额
+    SELECT 
+        b_c_id,
+        SUM(b_balance) AS 信用卡透支
+    FROM 
+        bank_card
+    WHERE 
+        b_type = '信用卡'
+    GROUP BY 
+        b_c_id
+) AS credit ON c.c_id = credit.b_c_id
+ORDER BY 
+    c.c_id;
+
+
+
+
+
+
+/*  end  of  your code  */ 

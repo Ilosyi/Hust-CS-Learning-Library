@@ -1,0 +1,87 @@
+-- 17 查询2022年2月购买基金的高峰期。至少连续三个交易日，所有投资者购买基金的总金额超过100万(含)，则称这段连续交易日为投资者购买基金的高峰期。只有交易日才能购买基金,但不能保证每个交易日都有投资者购买基金。2022年春节假期之后的第1个交易日为2月7日,周六和周日是非交易日，其余均为交易日。请列出高峰时段的日期和当日基金的总购买金额，按日期顺序排序。总购买金额命名为total_amount。
+--    请用一条SQL语句实现该查询：
+
+WITH 
+-- 1. 生成2022年2月所有交易日
+trading_days AS (
+    SELECT date_value AS pro_purchase_time,
+           ROW_NUMBER() OVER (ORDER BY date_value) AS day_seq
+    FROM (
+        SELECT MAKEDATE(2022, 31) + INTERVAL (seq) DAY AS date_value
+        FROM (
+            SELECT 0 AS seq UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION
+            SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION
+            SELECT 10 UNION SELECT 11 UNION SELECT 12 UNION SELECT 13 UNION SELECT 14 UNION
+            SELECT 15 UNION SELECT 16 UNION SELECT 17 UNION SELECT 18 UNION SELECT 19 UNION
+            SELECT 20 UNION SELECT 21 UNION SELECT 22 UNION SELECT 23 UNION SELECT 24 UNION
+            SELECT 25 UNION SELECT 26 UNION SELECT 27 UNION SELECT 28
+        ) AS seq
+        WHERE MAKEDATE(2022, 31) + INTERVAL (seq) DAY BETWEEN '2022-02-01' AND '2022-02-28'
+    ) AS dates
+    WHERE 
+        -- 排除春节假期(2月1日-2月6日)
+        date_value >= '2022-02-07' AND
+        -- 排除周末(周六和周日)
+        DAYOFWEEK(date_value) NOT IN (1, 7)
+),
+
+-- 2. 计算每个交易日的基金购买总额
+daily_amount AS (
+    SELECT 
+        p.pro_purchase_time AS pro_purchase_time,
+        SUM(p.pro_quantity * f.f_amount) AS total_amount
+    FROM 
+        property p
+    JOIN 
+        fund f ON p.pro_pif_id = f.f_id
+    WHERE 
+        p.pro_type = 3 AND -- 假设3代表基金类型
+        p.pro_purchase_time BETWEEN '2022-02-07' AND '2022-02-28'
+    GROUP BY 
+        p.pro_purchase_time
+    HAVING 
+        SUM(p.pro_quantity * f.f_amount) >= 1000000
+),
+
+-- 3. 合并交易日和高峰日数据
+trade_peaks AS (
+    SELECT 
+        td.pro_purchase_time,
+        td.day_seq,
+        COALESCE(da.total_amount, 0) AS total_amount
+    FROM 
+        trading_days td
+    LEFT JOIN 
+        daily_amount da ON td.pro_purchase_time = da.pro_purchase_time
+    WHERE 
+        da.pro_purchase_time IS NOT NULL  -- 只保留高峰日
+),
+
+-- 4. 识别连续三个高峰日
+consecutive_peaks AS (
+    SELECT 
+        p1.pro_purchase_time AS date1,
+        p2.pro_purchase_time AS date2,
+        p3.pro_purchase_time AS date3
+    FROM 
+        trade_peaks p1
+    JOIN 
+        trade_peaks p2 ON p2.day_seq = p1.day_seq + 1
+    JOIN 
+        trade_peaks p3 ON p3.day_seq = p2.day_seq + 1
+)
+
+-- 5. 最终结果
+SELECT DISTINCT
+    tp.pro_purchase_time,
+    tp.total_amount
+FROM 
+    trade_peaks tp
+JOIN 
+    consecutive_peaks cp ON tp.pro_purchase_time IN (cp.date1, cp.date2, cp.date3)
+ORDER BY 
+    tp.pro_purchase_time;
+
+
+
+/*  end  of  your code  */
