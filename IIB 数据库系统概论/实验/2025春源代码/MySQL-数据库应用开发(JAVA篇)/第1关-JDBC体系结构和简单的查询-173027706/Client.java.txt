@@ -1,0 +1,69 @@
+/* 请在适当的位置补充代码，完成指定的任务 
+   提示：
+      try {
+
+
+      } catch
+    之间补充代码  
+*/
+import java.sql.*;
+
+public class Client {
+    public static void main(String[] args) {
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+ 
+            // 1. 加载JDBC驱动
+            Class.forName("com.mysql.cj.jdbc.Driver");        
+            // 2. 建立数据库连接
+            String url = "jdbc:mysql://localhost:3306/finance?useSSL=false&serverTimezone=UTC";
+            String username = "root"; 
+            String password = "123123"; 
+            connection = DriverManager.getConnection(url, username, password);
+            
+            // 3. 创建Statement对象
+            statement = connection.createStatement();
+            
+            // 4. 执行SQL查询
+            String sql = "SELECT c_name, c_mail, c_phone FROM client WHERE c_mail IS NOT NULL";
+            resultSet = statement.executeQuery(sql);
+            
+            // 5. 输出表头（注意制表符数量）
+            System.out.println("姓名\t邮箱\t\t\t\t电话");
+            
+            // 6. 处理结果集
+            while (resultSet.next()) {
+                String name = resultSet.getString("c_name");
+                String mail = resultSet.getString("c_mail");
+                String phone = resultSet.getString("c_phone");
+                
+                // 按照要求的格式输出（注意制表符数量）
+                System.out.println(name + "\t" + mail + "\t\t" + phone);
+            }
+ 
+         } catch (ClassNotFoundException e) {
+            System.out.println("Sorry,can`t find the JDBC Driver!"); 
+            e.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+    }
+}
