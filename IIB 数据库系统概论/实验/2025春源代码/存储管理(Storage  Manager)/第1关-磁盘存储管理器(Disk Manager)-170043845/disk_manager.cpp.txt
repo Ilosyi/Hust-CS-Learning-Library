@@ -1,0 +1,285 @@
+#include "storage/disk_manager.h"
+
+#include <assert.h>    // 断言
+#include <string.h>    // 内存操作
+#include <sys/stat.h>  // 文件状态
+#include <unistd.h>    // 文件操作
+
+#include "defs.h"
+
+// 构造函数，初始化文件描述符到页面编号的映射
+DiskManager::DiskManager() { 
+    memset(fd2pageno_, 0, MAX_FD * (sizeof(std::atomic<page_id_t>) / sizeof(char))); 
+}
+
+/**
+ * @brief 将数据写入磁盘文件的指定页面
+ * @param fd 文件描述符
+ * @param page_no 页面编号
+ * @param offset 要写入的数据
+ * @param num_bytes 要写入的字节数
+ */
+void DiskManager::write_page(int fd, page_id_t page_no, const char *offset, int num_bytes) {
+    // 计算页面在文件中的偏移量（页面编号 * 页面大小）
+    off_t file_offset = page_no * PAGE_SIZE;
+    
+    // 定位到文件偏移量
+    if (lseek(fd, file_offset, SEEK_SET) == -1) {
+        throw UnixError(); // 定位失败抛出异常
+    }
+    
+    // 写入数据
+    if (write(fd, offset, num_bytes) != num_bytes) {
+        throw UnixError(); // 写入失败抛出异常
+    }
+}
+
+/**
+ * @brief 从磁盘文件的指定页面读取数据
+ * @param fd 文件描述符
+ * @param page_no 页面编号
+ * @param offset 存储读取数据的缓冲区
+ * @param num_bytes 要读取的字节数
+ */
+void DiskManager::read_page(int fd, page_id_t page_no, char *offset, int num_bytes) {
+    // 计算页面在文件中的偏移量（页面编号 * 页面大小）
+    off_t file_offset = page_no * PAGE_SIZE;
+    
+    // 定位到文件偏移量
+    if (lseek(fd, file_offset, SEEK_SET) == -1) {
+        throw UnixError(); // 定位失败抛出异常
+    }
+    
+    // 读取数据
+    if (read(fd, offset, num_bytes) != num_bytes) {
+        throw UnixError(); // 读取失败抛出异常
+    }
+}
+
+/**
+ * @brief 分配一个新的页面编号
+ * @param fd 文件描述符
+ * @return 分配的新页面编号
+ */
+page_id_t DiskManager::AllocatePage(int fd) {
+    assert(fd >= 0 && fd < MAX_FD); // 确保文件描述符有效
+    return fd2pageno_[fd]++; // 自增分配策略
+}
+
+/**
+ * @brief 释放页面（暂不实现）
+ * @param page_id 页面编号
+ */
+void DiskManager::DeallocatePage(__attribute__((unused)) page_id_t page_id) {
+    // 目前不需要实现
+}
+
+/**
+ * @brief 判断指定路径是否为目录
+ * @param path 路径
+ * @return 是否为目录
+ */
+bool DiskManager::is_dir(const std::string &path) {
+    struct stat st;
+    return stat(path.c_str(), &st) == 0 && S_ISDIR(st.st_mode);
+}
+
+/**
+ * @brief 创建目录
+ * @param path 目录路径
+ */
+void DiskManager::create_dir(const std::string &path) {
+    std::string cmd = "mkdir " + path;
+    if (system(cmd.c_str()) < 0) {
+        throw UnixError(); // 创建失败抛出异常
+    }
+}
+
+/**
+ * @brief 删除目录
+ * @param path 目录路径
+ */
+void DiskManager::destroy_dir(const std::string &path) {
+    std::string cmd = "rm -r " + path;
+    if (system(cmd.c_str()) < 0) {
+        throw UnixError(); // 删除失败抛出异常
+    }
+}
+
+/**
+ * @brief 判断指定路径是否为文件
+ * @param path 文件路径
+ * @return 是否为文件
+ */
+bool DiskManager::is_file(const std::string &path) {
+    struct stat st;
+    return stat(path.c_str(), &st) == 0 && S_ISREG(st.st_mode);
+}
+
+/**
+ * @brief 创建文件
+ * @param path 文件路径
+ */
+void DiskManager::create_file(const std::string &path) {
+    if (is_file(path)) {
+        throw FileExistsError(path); // 文件已存在抛出异常
+    }
+    
+    // 使用 O_CREAT 和 O_RDWR 模式创建文件
+    int fd = open(path.c_str(), O_CREAT | O_RDWR, S_IRUSR | S_IWUSR);
+    if (fd == -1) {
+        throw UnixError(); // 创建失败抛出异常
+    }
+    close(fd); // 关闭文件
+}
+
+/**
+ * @brief 删除文件
+ * @param path 文件路径
+ */
+void DiskManager::destroy_file(const std::string &path) {
+    if (!is_file(path)) {
+        throw FileNotFoundError(path); // 文件不存在抛出异常
+    }
+    
+    // 检查文件是否已打开
+    if (path2fd_.find(path) != path2fd_.end()) {
+        throw FileNotClosedError(path); // 文件未关闭抛出异常
+    }
+    
+    // 删除文件
+    if (unlink(path.c_str()) != 0) {
+        throw UnixError(); // 删除失败抛出异常
+    }
+}
+
+/**
+ * @brief 打开文件
+ * @param path 文件路径
+ * @return 文件描述符
+ */
+int DiskManager::open_file(const std::string &path) {
+    if (!is_file(path)) {
+        throw FileNotFoundError(path); // 文件不存在抛出异常
+    }
+    
+    // 检查文件是否已打开
+    auto it = path2fd_.find(path);
+    if (it != path2fd_.end()) {
+        return it->second; // 返回已打开的文件描述符
+    }
+    
+    // 使用 O_RDWR 模式打开文件
+    int fd = open(path.c_str(), O_RDWR);
+    if (fd == -1) {
+        throw UnixError(); // 打开失败抛出异常
+    }
+    
+    // 更新文件打开列表
+    path2fd_[path] = fd;
+    fd2path_[fd] = path;
+    
+    return fd;
+}
+
+/**
+ * @brief 关闭文件
+ * @param fd 文件描述符
+ */
+void DiskManager::close_file(int fd) {
+    auto it = fd2path_.find(fd);
+    if (it == fd2path_.end()) {
+        throw FileNotOpenError(fd); // 文件未打开抛出异常
+    }
+    
+    close(fd); // 关闭文件
+    
+    // 更新文件打开列表
+    path2fd_.erase(it->second);
+    fd2path_.erase(it);
+}
+
+/**
+ * @brief 获取文件大小
+ * @param file_name 文件名
+ * @return 文件大小（字节）
+ */
+int DiskManager::GetFileSize(const std::string &file_name) {
+    struct stat stat_buf;
+    int rc = stat(file_name.c_str(), &stat_buf);
+    return rc == 0 ? stat_buf.st_size : -1;
+}
+
+/**
+ * @brief 根据文件描述符获取文件名
+ * @param fd 文件描述符
+ * @return 文件名
+ */
+std::string DiskManager::GetFileName(int fd) {
+    if (!fd2path_.count(fd)) {
+        throw FileNotOpenError(fd); // 文件未打开抛出异常
+    }
+    return fd2path_[fd];
+}
+
+/**
+ * @brief 根据文件名获取文件描述符
+ * @param file_name 文件名
+ * @return 文件描述符
+ */
+int DiskManager::GetFileFd(const std::string &file_name) {
+    if (!path2fd_.count(file_name)) {
+        return open_file(file_name); // 文件未打开则打开
+    }
+    return path2fd_[file_name];
+}
+
+/**
+ * @brief 读取日志文件
+ * @param log_data 存储日志数据的缓冲区
+ * @param size 要读取的字节数
+ * @param offset 偏移量
+ * @param prev_log_end 上一次日志结束位置
+ * @return 是否读取成功
+ */
+bool DiskManager::ReadLog(char *log_data, int size, int offset, int prev_log_end) {
+    if (log_fd_ == -1) {
+        log_fd_ = open_file(LOG_FILE_NAME); // 打开日志文件
+    }
+    
+    offset += prev_log_end;
+    int file_size = GetFileSize(LOG_FILE_NAME);
+    
+    if (offset >= file_size) {
+        return false; // 偏移量超出文件大小
+    }
+    
+    size = std::min(size, file_size - offset); // 调整读取大小
+    
+    lseek(log_fd_, offset, SEEK_SET); // 定位到偏移量
+    ssize_t bytes_read = read(log_fd_, log_data, size); // 读取数据
+    
+    if (bytes_read != size) {
+        throw UnixError(); // 读取失败抛出异常
+    }
+    
+    return true;
+}
+
+/**
+ * @brief 写入日志文件
+ * @param log_data 要写入的日志数据
+ * @param size 要写入的字节数
+ */
+void DiskManager::WriteLog(char *log_data, int size) {
+    if (log_fd_ == -1) {
+        log_fd_ = open_file(LOG_FILE_NAME); // 打开日志文件
+    }
+    
+    lseek(log_fd_, 0, SEEK_END); // 定位到文件末尾
+    ssize_t bytes_write = write(log_fd_, log_data, size); // 写入数据
+    
+    if (bytes_write != size) {
+        throw UnixError(); // 写入失败抛出异常
+    }
+}
