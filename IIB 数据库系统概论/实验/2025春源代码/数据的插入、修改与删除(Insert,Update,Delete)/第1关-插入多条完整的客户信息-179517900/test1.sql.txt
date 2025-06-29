@@ -1,0 +1,7 @@
+use finance1;
+INSERT INTO client (c_id, c_name, c_mail, c_id_card, c_phone, c_password)
+VALUES 
+    (1, '林惠雯', '960323053@qq.com', '411014196712130323', '15609032348', 'Mop5UPkl'),
+    (2, '吴婉瑜', '1613230826@gmail.com', '420152196802131323', '17605132307', 'QUTPhxgVNlXtMxN'),
+    (3, '蔡贞仪', '252323341@foxmail.com', '160347199005222323', '17763232321', 'Bwe3gyhEErJ7');
+

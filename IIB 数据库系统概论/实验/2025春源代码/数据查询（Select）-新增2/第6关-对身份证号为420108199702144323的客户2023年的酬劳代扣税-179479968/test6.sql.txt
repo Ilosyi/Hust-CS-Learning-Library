@@ -1,0 +1,43 @@
+-- 对身份证号为C的客户2024年的酬劳代扣税
+
+
+-- 1. 计算客户2023年总收入
+WITH client_income AS (
+    SELECT 
+        c.c_id,
+        SUM(w.w_amount) AS total_salary
+    FROM 
+        client c
+    JOIN 
+        wage w ON c.c_id = w.w_c_id
+    WHERE 
+        c.c_id_card = '420108199702144323'
+        AND YEAR(w.w_time) = 2023
+    GROUP BY 
+        c.c_id
+),
+
+-- 2. 计算应缴税额
+tax_calculation AS (
+    SELECT 
+        c_id,
+        total_salary,
+        GREATEST(total_salary - 60000, 0) * 0.2 AS total_tax
+    FROM 
+        client_income
+)
+
+-- 3. 更新每月扣税记录
+UPDATE wage w
+JOIN client c ON w.w_c_id = c.c_id
+JOIN tax_calculation tc ON c.c_id = tc.c_id
+SET 
+    w.w_amount = w.w_amount - (tc.total_tax * (w.w_amount / tc.total_salary)),
+    w.w_tax = IF(tc.total_tax > 0, 'Y', 'N')
+WHERE 
+    c.c_id_card = '420108199702144323'
+    AND YEAR(w.w_time) = 2023;
+
+
+
+/* end of you code */ 

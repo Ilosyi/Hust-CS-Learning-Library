@@ -1,0 +1,14 @@
+SELECT 
+    w.w_org,
+    SUM(w.w_amount) AS total_salary
+FROM 
+    wage w
+JOIN 
+    client c ON w.w_c_id = c.c_id
+WHERE 
+    w.w_type = 2  -- 兼职酬劳类型
+GROUP BY 
+    w.w_org
+ORDER BY 
+    total_salary DESC  -- 按酬劳降序排列
+LIMIT 3;  -- 只返回前三名

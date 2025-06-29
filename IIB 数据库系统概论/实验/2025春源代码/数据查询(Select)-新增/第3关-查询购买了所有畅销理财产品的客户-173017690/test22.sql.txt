@@ -1,0 +1,56 @@
+   -- 3) 查询购买了所有畅销理财产品的客户
+--   请用一条SQL语句实现该查询：
+
+
+
+WITH 
+-- 1. 找出所有畅销理财产品(持有人数>2)
+popular_products AS (
+    SELECT 
+        pro_pif_id
+    FROM 
+        property
+    WHERE 
+        pro_type = 1  -- 理财产品类型
+    GROUP BY 
+        pro_pif_id
+    HAVING 
+        COUNT(DISTINCT pro_c_id) > 2  -- 持有人数超过2
+),
+
+-- 2. 统计每个客户购买的理财产品
+client_products AS (
+    SELECT 
+        pro_c_id,
+        pro_pif_id
+    FROM 
+        property
+    WHERE 
+        pro_type = 1  -- 理财产品类型
+    GROUP BY 
+        pro_c_id, pro_pif_id  -- 确保每个客户对每种产品只计一次
+)
+
+-- 3. 找出购买了所有畅销理财产品的客户
+SELECT DISTINCT
+    cp.pro_c_id
+FROM 
+    client_products cp
+WHERE NOT EXISTS (
+    -- 找出该客户没有购买的畅销产品
+    SELECT 1
+    FROM popular_products pp
+    WHERE NOT EXISTS (
+        SELECT 1
+        FROM client_products cp2
+        WHERE cp2.pro_c_id = cp.pro_c_id
+        AND cp2.pro_pif_id = pp.pro_pif_id
+    )
+)
+ORDER BY 
+    pro_c_id ASC;  -- 按客户编号升序排列
+
+
+
+
+/*  end  of  your code  */

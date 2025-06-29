@@ -1,0 +1,46 @@
+  -- 2) 投资积极且偏好理财类产品的客户
+--   请用一条SQL语句实现该查询：
+
+SELECT DISTINCT
+    fc.pro_c_id
+FROM 
+    (
+        -- 子查询：统计每个客户购买的理财产品种类数，且要求超过3种
+        SELECT 
+            pro_c_id,
+            COUNT(DISTINCT pro_pif_id) AS finance_count
+        FROM 
+            property
+        WHERE 
+            pro_type = 1                      -- 理财产品类型
+        GROUP BY 
+            pro_c_id
+        HAVING 
+            COUNT(DISTINCT pro_pif_id) > 3    -- 仅保留购买种类数超过3的客户
+    ) AS fc
+JOIN 
+    (
+        -- 子查询：统计每个客户购买的基金产品种类数
+        SELECT 
+            pro_c_id,
+            COUNT(DISTINCT pro_pif_id) AS fund_count
+        FROM 
+            property
+        WHERE 
+            pro_type = 3                      -- 基金产品类型
+        GROUP BY 
+            pro_c_id
+    ) AS fd
+ON 
+    fc.pro_c_id = fd.pro_c_id                 -- 两个统计结果按客户编号连接
+WHERE 
+    fc.finance_count > fd.fund_count          -- 筛选出理财产品种类 > 基金产品种类的客户
+ORDER BY 
+    fc.pro_c_id ASC;                          -- 结果按客户编号升序排列
+
+
+
+
+
+
+/*  end  of  your code  */

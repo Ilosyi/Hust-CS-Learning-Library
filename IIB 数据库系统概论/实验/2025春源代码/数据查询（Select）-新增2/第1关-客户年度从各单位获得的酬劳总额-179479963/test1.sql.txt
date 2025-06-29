@@ -1,0 +1,23 @@
+-- 将客户年度从各单位获得的酬劳进行排序
+
+
+SELECT 
+    c.c_name,
+    EXTRACT(YEAR FROM w.w_time) AS year,
+    c.c_id_card,
+    COALESCE(SUM(CASE WHEN w.w_type = 1 THEN w.w_amount ELSE 0 END), 0) AS full_t_amount,
+    COALESCE(SUM(CASE WHEN w.w_type = 2 THEN w.w_amount ELSE 0 END), 0) AS part_t_amount
+FROM 
+    client c
+LEFT JOIN 
+    wage w ON c.c_id = w.w_c_id
+WHERE 
+    w.w_c_id IS NOT NULL  -- 确保只统计有效客户关联的记录
+GROUP BY 
+    c.c_id, c.c_name, c.c_id_card, EXTRACT(YEAR FROM w.w_time)
+ORDER BY 
+    full_t_amount + part_t_amount DESC;  -- 按全职和兼职总金额降序排序
+
+
+
+/* end of you code */

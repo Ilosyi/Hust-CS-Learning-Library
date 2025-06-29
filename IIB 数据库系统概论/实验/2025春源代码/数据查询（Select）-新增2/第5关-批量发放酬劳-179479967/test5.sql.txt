@@ -1,0 +1,7 @@
+--用一条SQL语句将new_wage表的全部酬劳信息插入到薪资表(wage)
+
+
+
+
+
+/* end of you code */

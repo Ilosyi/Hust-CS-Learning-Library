@@ -1,0 +1,22 @@
+-- 获得兼职总酬劳前三名的客户:
+
+
+SELECT 
+    c.c_name,
+    c.c_id_card,
+    COALESCE(SUM(w.w_amount), 0) AS total_salary
+FROM 
+    client c
+JOIN 
+    wage w ON c.c_id = w.w_c_id
+WHERE 
+    w.w_type = 2  -- 兼职酬劳类型
+GROUP BY 
+    c.c_id, c.c_name, c.c_id_card
+ORDER BY 
+    total_salary DESC  -- 按酬劳降序排列
+LIMIT 3;  -- 只返回前三名
+
+
+
+/* end of you code */

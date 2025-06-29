@@ -1,0 +1,7 @@
+
+use finance1;
+
+UPDATE property p
+JOIN client c ON p.pro_c_id = c.c_id
+SET p.pro_id_card = c.c_id_card
+WHERE p.pro_id_card IS NULL;

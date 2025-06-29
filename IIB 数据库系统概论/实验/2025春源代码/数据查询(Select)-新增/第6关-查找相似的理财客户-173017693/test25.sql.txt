@@ -1,0 +1,54 @@
+ -- 6) 查找相似的理财客户
+--   请用一条SQL语句实现该查询：
+
+
+
+WITH 
+-- 1. 获取每位客户购买的理财产品集合
+client_products AS (
+    SELECT DISTINCT 
+        pro_c_id,
+        pro_pif_id
+    FROM 
+        property
+    WHERE 
+        pro_type = 1  -- 理财产品类型
+),
+
+-- 2. 计算客户间的相似度
+client_similarity AS (
+    SELECT 
+        a.pro_c_id AS pac,
+        b.pro_c_id AS pbc,
+        COUNT(*) AS common,
+        DENSE_RANK() OVER (
+            PARTITION BY a.pro_c_id 
+            ORDER BY COUNT(*) DESC, b.pro_c_id ASC
+        ) AS crank
+    FROM 
+        client_products a
+    JOIN 
+        client_products b ON a.pro_pif_id = b.pro_pif_id AND a.pro_c_id <> b.pro_c_id
+    GROUP BY 
+        a.pro_c_id, b.pro_c_id
+)
+
+-- 3. 筛选相似度排名前2的客户对
+SELECT 
+    pac,
+    pbc,
+    common,
+    crank
+FROM 
+    client_similarity
+WHERE 
+    crank < 3  -- 排名值小于3(即前2名)
+ORDER BY 
+    pac ASC,  -- 按左边客户编号升序
+    crank ASC;  -- 同一客户的相似客户按排名顺序排列
+
+
+
+
+
+/*  end  of  your code  */

@@ -1,0 +1,49 @@
+-- 5) 查询任意两个客户的相同理财产品数
+--   请用一条SQL语句实现该查询：
+
+
+WITH 
+-- 获取每个客户持有的理财产品列表
+client_products AS (
+    SELECT DISTINCT 
+        pro_c_id,
+        pro_pif_id
+    FROM 
+        property
+    WHERE 
+        pro_type = 1  -- 理财产品类型
+),
+
+-- 计算每对客户持有的相同产品数（包含双向组合）
+common_products AS (
+    SELECT 
+        a.pro_c_id AS client1,
+        b.pro_c_id AS client2,
+        COUNT(*) AS total_count
+    FROM 
+        client_products a
+    JOIN 
+        client_products b ON a.pro_pif_id = b.pro_pif_id AND a.pro_c_id <> b.pro_c_id
+    GROUP BY 
+        a.pro_c_id, b.pro_c_id
+    HAVING 
+        COUNT(*) >= 2  -- 至少2种相同产品
+)
+
+-- 按要求格式输出结果（包含双向组合）
+SELECT 
+    client1 AS pro_c_id,
+    client2 AS pro_c_id,
+    total_count
+FROM 
+    common_products
+ORDER BY 
+    client1 ASC,  -- 第一列客户编号升序
+    client2 ASC;  -- 第二列客户编号升序
+
+
+
+
+
+
+/*  end  of  your code  */

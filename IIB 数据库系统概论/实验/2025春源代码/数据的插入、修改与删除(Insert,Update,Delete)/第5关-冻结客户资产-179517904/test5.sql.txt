@@ -1,0 +1,10 @@
+use finance1;
+
+UPDATE property
+SET pro_status='冻结'
+WHERE pro_c_id=
+(
+    SELECT c_id
+    FROM client
+    WHERE c_phone='13686431238'
+);

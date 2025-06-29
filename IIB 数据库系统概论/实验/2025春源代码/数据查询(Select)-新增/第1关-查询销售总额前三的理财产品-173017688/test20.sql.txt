@@ -1,0 +1,38 @@
+ -- 1) 查询销售总额前三的理财产品
+--   请用一条SQL语句实现该查询：
+
+
+SELECT 
+    t.pyear,           -- 年份
+    t.rk,              -- 排名
+    t.p_id,            -- 理财产品编号
+    t.sumamount        -- 销售总额
+FROM (
+    SELECT 
+        YEAR(p.pro_purchase_time) AS pyear,                         -- 从资产表中提取购买年份
+        p.pro_pif_id AS p_id,                                      -- 理财产品编号
+        SUM(p.pro_quantity * f.p_amount) AS sumamount,             -- 销售总额 = 数量 × 单价
+        RANK() OVER (PARTITION BY YEAR(p.pro_purchase_time)        -- 按年份分组进行排名
+                     ORDER BY SUM(p.pro_quantity * f.p_amount) DESC) AS rk
+    FROM 
+        property p
+    JOIN 
+        finances_product f ON p.pro_pif_id = f.p_id                -- 资产与理财产品表关联
+    WHERE 
+        p.pro_type = 1                                             -- 仅统计理财产品
+        AND YEAR(p.pro_purchase_time) IN (2010, 2011)              -- 限定年份为2010和2011
+        AND p.pro_status = '可用'                                  -- 只统计“可用”状态的资产
+    GROUP BY 
+        YEAR(p.pro_purchase_time), p.pro_pif_id                    -- 按年份和产品编号分组
+) AS t
+WHERE 
+    t.rk <= 3                                                      -- 只取前3名（含并列）
+ORDER BY 
+    t.pyear ASC, t.rk ASC, t.p_id ASC;                             -- 最终排序：年 → 排名 → 产品编号
+
+
+
+
+
+
+/*  end  of  your code  */
