@@ -1,0 +1,5 @@
+CCAB指令为
+AUIPC
+SLTIU
+BGE
+LBU
