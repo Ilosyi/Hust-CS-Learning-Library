@@ -1,21 +1,7 @@
 # 基于前馈神经网络的二维高斯数据分类
 
 本项目设计并实现一个前馈神经网络（Feedforward Neural Network, FNN），用于对一个四分类的二维高斯分布数据集进行分类。通过一系列对比实验，探索了不同网络架构、超参数和正则化方法对模型性能的影响，并最终确定了一套高效、简洁的优化配置。
-
-## 目录
-
-  - [项目描述](https://www.google.com/search?q=%23%E9%A1%B9%E7%9B%AE%E6%8F%8F%E8%BF%B0)
-  - [环境要求](https://www.google.com/search?q=%23%E7%8E%AF%E5%A2%83%E8%A6%81%E6%B1%82)
-  - [文件结构](https://www.google.com/search?q=%23%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84)
-  - [如何运行](https://www.google.com/search?q=%23%E5%A6%82%E4%BD%95%E8%BF%90%E8%A1%8C)
-  - [最佳模型配置](https://www.google.com/search?q=%23%E6%9C%80%E4%BD%B3%E6%A8%A1%E5%9E%8B%E9%85%8D%E7%BD%AE)
-  - [实验结果](https://www.google.com/search?q=%23%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C)
-      - [最终性能](https://www.google.com/search?q=%23%E6%9C%80%E7%BB%88%E6%80%A7%E8%83%BD)
-      - [训练过程分析](https://www.google.com/search?q=%23%E8%AE%AD%E7%BB%83%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90)
-      - [对比实验结论](https://www.google.com/search?q=%23%E5%AF%B9%E6%AF%94%E5%AE%9E%E9%AA%8C%E7%BB%93%E8%AE%BA)
-  - [可视化](https://www.google.com/search?q=%23%E5%8F%AF%E8%A7%86%E5%8C%96)
-  - [未来可改进方向](https://www.google.com/search?q=%23%E6%9C%AA%E6%9D%A5%E5%8F%AF%E6%94%B9%E8%BF%9B%E6%96%B9%E5%90%91)
-
+@[TOC]
 ## 项目描述
 
 [cite\_start]本项目的核心任务是解决一个多分类监督学习问题 [cite: 23][cite\_start]。具体而言，需要设计一个包含至少一层隐藏层的前馈神经网络，对一个包含4000个样本的数据集进行分类 [cite: 21, 22][cite\_start]。每个样本包含2个特征和1个类别标签（共4个类别） [cite: 21][cite\_start]。实验将数据集按90%训练集和10%测试集的比例划分，以评估模型的分类性能和泛化能力 [cite: 22]。
