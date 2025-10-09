@@ -1,0 +1,29 @@
+#创建gitTraining目录
+mkdir gitTraining
+
+#进入gitTraining目录
+cd gitTraining
+
+#将gitTraining初始化为一个本地仓库
+git init
+
+#创建helloGit.txt
+touch helloGit.txt
+
+#添加远程仓库
+git remote add git /tmp/educoder.git
+
+#将helloGit.txt添加到暂存区
+git add helloGit.txt
+
+#将helloGit.txt提交到本地仓库
+git commit -m "hello Git!"
+
+
+#请在下面的Begin/End内填写语句，将本地master分支的修改推送到
+#远程仓库的master分支
+#********** Begin **********#
+
+git push -u git master master
+
+#********** End **********#
