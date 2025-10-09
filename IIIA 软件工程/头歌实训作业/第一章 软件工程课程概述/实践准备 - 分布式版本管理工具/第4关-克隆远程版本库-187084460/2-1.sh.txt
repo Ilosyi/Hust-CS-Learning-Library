@@ -1,0 +1,6 @@
+#请在下面的Begin/End内填写语句以将远程版本库clone到本地
+#********** Begin **********#
+
+
+git clone /tmp/sample.git
+#********** End **********#

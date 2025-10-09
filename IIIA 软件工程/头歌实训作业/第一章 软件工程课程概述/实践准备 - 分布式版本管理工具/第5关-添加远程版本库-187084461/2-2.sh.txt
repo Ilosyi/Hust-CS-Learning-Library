@@ -1,0 +1,15 @@
+#创建gitTrainging文件夹
+mkdir gitTraining
+
+#进入到gitTraining文件夹
+cd gitTraining
+
+#将gitTraining初始化为一个本地仓库
+git init
+
+#请在下面的Begin/End内填写语句添加符合要求的主机名和远程仓库
+#********** Begin **********#
+git remote add git /tmp/sample.git
+
+
+#********** End **********#
