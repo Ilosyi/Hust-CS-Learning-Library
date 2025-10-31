@@ -1,0 +1,5 @@
+SMTPClient.pdf：邮件客户端Demo
+HttpClient.pdf：HTTP客户端Demo（模拟浏览器向服务器发出HTTP请求）
+Server.html：服务器，接受客户端传来的半径，计算圆的面积并返回
+MultiThreadsServer.html：多线程服务器，接受客户端传来的半径，计算圆的面积并返回
+Client.html：客户端，向服务器发送半径，接受服务器返回的圆的面积

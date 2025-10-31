@@ -1,0 +1,102 @@
+<HTML>
+<HEAD>
+<TITLE>Intro to Java Programming, 3/E - MultiThreadsServer.html</TITLE>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="KEYWORDS" CONTENT="JBuilderHtml">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="KEYWORDS" CONTENT="JBuilderHtml">
+</HEAD>
+<pre><FONT COLOR="#008000">// MultiThreadsServer.java: The server can communicate with
+<FONT COLOR="#000000"><FONT COLOR="#008000">// multiple clients concurrently using the multiple threads
+<FONT COLOR="#000000"><FONT COLOR="#000080"><B>import</B></FONT><FONT COLOR="#000000"> java.io.*;
+<FONT COLOR="#000080"><B>import</B></FONT><FONT COLOR="#000000"> java.net.*;
+<FONT COLOR="#000080"><B>import</B></FONT><FONT COLOR="#000000"> java.util.*;
+
+<FONT COLOR="#000080"><B>public</B></FONT><FONT COLOR="#000000"> <FONT COLOR="#000080"><B>class</B></FONT><FONT COLOR="#000000"> MultiThreadsServer
+{
+  <FONT COLOR="#008000">// Main method
+<FONT COLOR="#000000">  <FONT COLOR="#000080"><B>public</B></FONT><FONT COLOR="#000000"> <FONT COLOR="#000080"><B>static</B></FONT><FONT COLOR="#000000"> <FONT COLOR="#000080"><B>void</B></FONT><FONT COLOR="#000000"> main(String[] args)
+  {
+    <FONT COLOR="#000080"><B>try</B></FONT><FONT COLOR="#000000">
+    {
+      <FONT COLOR="#008000">// Create a server socket
+<FONT COLOR="#000000">      ServerSocket serverSocket = <FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> ServerSocket(8000);
+
+      <FONT COLOR="#008000">// Number a thread
+<FONT COLOR="#000000">      <FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> i = 0;
+
+      <FONT COLOR="#000080"><B>while</B></FONT><FONT COLOR="#000000"> (true)
+      {
+        <FONT COLOR="#008000">// Listen for a new connection request
+<FONT COLOR="#000000">        Socket connectToClient = serverSocket.accept();
+
+        <FONT COLOR="#008000">// Print the new connect number on the console
+<FONT COLOR="#000000">        System.out.println("Starting thread "+i);
+
+        <FONT COLOR="#008000">// Create a new thread for the connection
+<FONT COLOR="#000000">        ThreadHandler thread = <FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> ThreadHandler(connectToClient, i);
+
+        <FONT COLOR="#008000">// Start the new thread
+<FONT COLOR="#000000">        thread.start();
+
+        <FONT COLOR="#008000">// Increment i to number the next connection
+<FONT COLOR="#000000">        i++;
+      }
+    }
+    catch(IOException ex)
+    {
+      System.err.println(ex);
+    }
+  }
+}
+
+<FONT COLOR="#008000">// Define the thread class for handling a new connection
+<FONT COLOR="#000000"><FONT COLOR="#000080"><B>class</B></FONT><FONT COLOR="#000000"> ThreadHandler <FONT COLOR="#000080"><B>extends</B></FONT><FONT COLOR="#000000"> Thread
+{
+  <FONT COLOR="#000080"><B>private</B></FONT><FONT COLOR="#000000"> Socket connectToClient; <FONT COLOR="#008000">// A connected socket
+<FONT COLOR="#000000">  <FONT COLOR="#000080"><B>private</B></FONT><FONT COLOR="#000000"> <FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> counter; <FONT COLOR="#008000">// Number the thread
+<FONT COLOR="#000000">
+  <FONT COLOR="#008000">// Construct a thread
+<FONT COLOR="#000000">  <FONT COLOR="#000080"><B>public</B></FONT><FONT COLOR="#000000"> ThreadHandler(Socket socket, <FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> i)
+  {
+    connectToClient = socket;
+    counter = i;
+  }
+
+  <FONT COLOR="#008000">// Implement the run() method for the thread
+<FONT COLOR="#000000">  <FONT COLOR="#000080"><B>public</B></FONT><FONT COLOR="#000000"> <FONT COLOR="#000080"><B>void</B></FONT><FONT COLOR="#000000"> run()
+  {
+    <FONT COLOR="#000080"><B>try</B></FONT><FONT COLOR="#000000">
+    {
+      <FONT COLOR="#008000">// Create data input and print streams
+<FONT COLOR="#000000">      BufferedReader isFromClient = <FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> BufferedReader(
+        <FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> InputStreamReader(connectToClient.getInputStream()));
+      PrintWriter osToClient =
+        <FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> PrintWriter(connectToClient.getOutputStream(), true);
+
+      <FONT COLOR="#008000">// Continuously serve the client
+<FONT COLOR="#000000">      <FONT COLOR="#000080"><B>while</B></FONT><FONT COLOR="#000000"> (true)
+      {
+        <FONT COLOR="#008000">// Receive data from the client in string
+<FONT COLOR="#000000">        StringTokenizer st = <FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> StringTokenizer
+          (isFromClient.readLine());
+
+        <FONT COLOR="#008000">// Get radius
+<FONT COLOR="#000000">        <FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> radius = <FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> Double(st.nextToken()).doubleValue();
+        System.out.println("radius received from client: "+radius);
+
+        <FONT COLOR="#008000">// Compute area
+<FONT COLOR="#000000">        <FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> area = radius*radius*Math.PI;
+
+        <FONT COLOR="#008000">// Send area back to the client
+<FONT COLOR="#000000">        osToClient.println(area);
+        System.out.println("Area found: " + area);
+      }
+    }
+    catch(IOException ex)
+    {
+      System.err.println(ex);
+    }
+  }
+}
+</pre>

@@ -1,0 +1,67 @@
+<HTML>
+<HEAD>
+<TITLE>Intro to Java Programming, 3/E - Server.html</TITLE>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="KEYWORDS" CONTENT="JBuilderHtml">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="KEYWORDS" CONTENT="JBuilderHtml">
+</HEAD>
+<pre><FONT COLOR="#008000">// Server.java: The server accepts data from the client, processes it
+<FONT COLOR="#000000"><FONT COLOR="#008000">// and returns the result back to the client
+<FONT COLOR="#000000"><FONT COLOR="#000080"><B>import</B></FONT><FONT COLOR="#000000"> java.io.*;
+<FONT COLOR="#000080"><B>import</B></FONT><FONT COLOR="#000000"> java.net.*;
+<FONT COLOR="#000080"><B>import</B></FONT><FONT COLOR="#000000"> java.util.*;
+
+<FONT COLOR="#000080"><B>public</B></FONT><FONT COLOR="#000000"> <FONT COLOR="#000080"><B>class</B></FONT><FONT COLOR="#000000"> Server 
+{
+  <FONT COLOR="#008000">// Main method
+<FONT COLOR="#000000">  <FONT COLOR="#000080"><B>public</B></FONT><FONT COLOR="#000000"> <FONT COLOR="#000080"><B>static</B></FONT><FONT COLOR="#000000"> <FONT COLOR="#000080"><B>void</B></FONT><FONT COLOR="#000000"> main(String[] args)
+  { 
+    <FONT COLOR="#000080"><B>try</B></FONT><FONT COLOR="#000000">
+    {
+      <FONT COLOR="#008000">// Create a server socket
+<FONT COLOR="#000000">      ServerSocket serverSocket = <FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> ServerSocket(8000);
+
+      <FONT COLOR="#008000">// Start listening for connections on the server socket
+<FONT COLOR="#000000">      Socket connectToClient = serverSocket.accept();
+
+      <FONT COLOR="#008000">// Create a buffered reader stream to get data from the client
+<FONT COLOR="#000000">      BufferedReader isFromClient = <FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> BufferedReader(new
+        InputStreamReader(connectToClient.getInputStream()));
+
+      <FONT COLOR="#008000">// Create a buffered writer stream to send data to the client
+<FONT COLOR="#000000">      PrintWriter osToClient = <FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> PrintWriter(
+        connectToClient.getOutputStream(), true);
+
+      <FONT COLOR="#008000">// Continuously read from the client and process it,
+<FONT COLOR="#000000">      <FONT COLOR="#008000">// and send result back to the client
+<FONT COLOR="#000000">      <FONT COLOR="#000080"><B>while</B></FONT><FONT COLOR="#000000"> (true)
+      {
+        <FONT COLOR="#008000">// Read a line and create a string tokenizer
+<FONT COLOR="#000000">        StringTokenizer st = <FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> StringTokenizer
+          (isFromClient.readLine());
+
+        <FONT COLOR="#008000">// Convert string to double
+<FONT COLOR="#000000">        <FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> radius = <FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> Double(st.nextToken()).doubleValue();
+
+        <FONT COLOR="#008000">// Display radius on console
+<FONT COLOR="#000000">        System.out.println("radius received from client: "
+          +radius);
+
+        <FONT COLOR="#008000">// Compute area
+<FONT COLOR="#000000">        <FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> area = radius*radius*Math.PI;
+
+        <FONT COLOR="#008000">// Send the result to the client
+<FONT COLOR="#000000">        osToClient.println(area);
+
+        <FONT COLOR="#008000">// Print the result to the console
+<FONT COLOR="#000000">        System.out.println("Area found: "+area);
+      }
+    }
+    catch(IOException ex)
+    {
+      System.err.println(ex);
+    }
+  }
+}
+</pre>
