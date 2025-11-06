@@ -1,7 +1,7 @@
 # 喻园易站（YuYuanYiZhan）
 
 面向校园场景的综合服务平台，支持闲置交易与跑腿/互助任务，内置消息私聊与邮箱验证码注册。架构为前后端分离：后端 Node.js + Express + MySQL，前端 React + Vite + Tailwind，API 采用 JWT 鉴权，消息使用 WebSocket。
-
+[阿里云部署网站](http://47.122.126.189/)
 ## 功能特性
 
 - 账号与安全
@@ -125,5 +125,6 @@ VITE_DEV_API_PORT=3000
 
 
 ```
+
 
 
