@@ -1,0 +1,10 @@
+{
+  "seed": 42,
+  "train_ratio": 0.1,
+  "test_ratio": 0.1,
+  "samples_per_split": 16,
+  "output": {
+    "train_pairs": "experiments\\dataset_viz_20251009_193131\\train_pairs.png",
+    "test_pairs": "experiments\\dataset_viz_20251009_193131\\test_pairs.png"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "experiment_name": "mnist_simple_cnn",
+  "batch_size": 128,
+  "epochs": 20,
+  "learning_rate": 0.001,
+  "train_ratio": 0.1,
+  "test_ratio": 0.1,
+  "pairs_per_epoch": 6000,
+  "seed": 42,
+  "device": "cuda",
+  "input_mode": "concat"
+}

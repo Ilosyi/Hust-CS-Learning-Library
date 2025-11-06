@@ -1,0 +1,34 @@
+{
+  "experiment_name": "mnist_simple_cnn",
+  "timestamp": "20251009_164023",
+  "config": {
+    "experiment_name": "mnist_simple_cnn",
+    "batch_size": 128,
+    "epochs": 20,
+    "learning_rate": 0.001,
+    "train_ratio": 0.1,
+    "test_ratio": 0.1,
+    "pairs_per_epoch": 6000,
+    "seed": 42,
+    "device": "cuda",
+    "input_mode": "concat"
+  },
+  "dataset_info": {
+    "train_images": 6000,
+    "test_images": 1000,
+    "train_pairs": 6000,
+    "test_pairs": 2000
+  },
+  "model_info": {
+    "architecture": "SimpleCompareCNN",
+    "total_params": 197761,
+    "trainable_params": 197761
+  },
+  "results": {
+    "best_test_accuracy": 0.9575,
+    "final_train_accuracy": 0.936,
+    "final_test_accuracy": 0.9525,
+    "final_train_loss": 0.16666393653551737,
+    "final_test_loss": 0.1334799052476883
+  }
+}

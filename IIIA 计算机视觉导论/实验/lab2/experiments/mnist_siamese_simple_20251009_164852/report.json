@@ -1,0 +1,33 @@
+{
+  "experiment_name": "mnist_siamese_simple",
+  "timestamp": "20251009_164852",
+  "config": {
+    "experiment_name": "mnist_siamese_simple",
+    "batch_size": 128,
+    "epochs": 20,
+    "learning_rate": 0.001,
+    "train_ratio": 0.1,
+    "test_ratio": 0.1,
+    "pairs_per_epoch": 6000,
+    "seed": 42,
+    "device": "cuda"
+  },
+  "dataset_info": {
+    "train_images": 6000,
+    "test_images": 1000,
+    "train_pairs": 6000,
+    "test_pairs": 2000
+  },
+  "model_info": {
+    "architecture": "SimpleSiameseNet",
+    "total_params": 363905,
+    "trainable_params": 363905
+  },
+  "results": {
+    "best_test_accuracy": 0.962,
+    "final_train_accuracy": 0.9515,
+    "final_test_accuracy": 0.962,
+    "final_train_loss": 0.12362095423539479,
+    "final_test_loss": 0.11472761678695678
+  }
+}

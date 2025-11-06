@@ -1,0 +1,53 @@
+{
+  "experiment_name": "mnist_siamese_cnn",
+  "timestamp": "20251009_180006",
+  "config": {
+    "experiment_name": "mnist_siamese_cnn",
+    "batch_size": 256,
+    "epochs": 25,
+    "learning_rate": 0.0008,
+    "weight_decay": 0.0001,
+    "train_ratio": 0.1,
+    "test_ratio": 0.1,
+    "pairs_per_epoch": 12000,
+    "seed": 42,
+    "device": "cuda",
+    "embedding_dim": 128,
+    "max_grad_norm": 1.0,
+    "use_amp": true,
+    "scheduler_factor": 0.5,
+    "scheduler_patience": 2,
+    "min_lr": 1e-05,
+    "num_workers": 8,
+    "augment": true,
+    "fast_dev_run": false,
+    "prefetch_factor": 4,
+    "persistent_workers": true,
+    "compile_model": false
+  },
+  "dataset_info": {
+    "train_images": 6000,
+    "test_images": 1000,
+    "train_pairs": 12000,
+    "test_pairs": 4000
+  },
+  "model_info": {
+    "architecture": "SiameseCompareNet",
+    "embedding_dim": 128,
+    "total_params": 192449,
+    "trainable_params": 192449
+  },
+  "results": {
+    "best_epoch": 24,
+    "best_test_accuracy": 0.987,
+    "best_test_auc": 0.9991298529451478,
+    "best_test_loss": 0.03563330636918545,
+    "best_train_accuracy": 0.97675,
+    "best_train_loss": 0.06498019486665725,
+    "best_test_loss_snapshot": 0.03725097281485796,
+    "best_test_auc_snapshot": 0.999052499052499,
+    "final_train_accuracy": 0.9778333333333333,
+    "final_test_accuracy": 0.98325,
+    "final_learning_rate": 0.0004
+  }
+}
