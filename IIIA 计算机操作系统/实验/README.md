@@ -1,7 +1,9 @@
 ## [代码看这个仓库](https://gitee.com/ilosyi/hustos-pke)
 每个子实验对应一个分支
 
-具体要改动哪些代码可结合git记录和实验文档
+具体要改动哪些文件代码可结合git记录和实验文档
+
+也可查看AI交互记录（实验指南）.md   （尚未上传）
 
 ## 环境准备教程（docker）
 ### **安装Docker桌面环境**
@@ -56,7 +58,39 @@
 
 ​	● **`--name`**: 为容器命名，便于后续使用。
 
-**再次进入容器**
-通过Docker desktop软件点击运行
+### **再次进入容器**
+
+通过Docker Desktop 点击运行按钮
+
 <img width="1254" height="395" alt="image" src="https://github.com/user-attachments/assets/13d4de06-ca18-4a20-a8ab-ad3d7458273e" />
+
+### Vscode连接本地容器进行开发
+#### 下载vscode并安装插件
+在Extensions中安装Docker插件和Remote Development工具包：
+
+#### 连接到容器
+打开命令面板，选择开发容器
+
+<img width="724" height="70" alt="image" src="https://github.com/user-attachments/assets/f248cede-5cc3-4723-92ce-536947a94a96" />
+
+
+接下来远程容器中自动安装完vscode远程服务器插件后，即可无缝进入开发环境。
+
+#### 使用github copilot
+由于在容器中开发，需要配置代理以确保网络正常
+
+打开设置，选择远程容器，找到proxy设置，配置为http://host.docker.internal:7890
+
+<img width="1432" height="657" alt="image" src="https://github.com/user-attachments/assets/414ffb66-22f8-4a0e-b203-74a5c9ad90cb" />
+
+同时，选择用户，同样找到对应设置，配置为http://host.docker.internal:7890
+
+打开代理工具，设置端口为7890，现在，可以让AI来做实验啦
+
+<img width="829" height="510" alt="image" src="https://github.com/user-attachments/assets/34f3f617-c32a-45ed-b199-a4dce77db41d" />
+
+
+
+
+
 
