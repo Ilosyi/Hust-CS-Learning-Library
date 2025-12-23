@@ -10,7 +10,7 @@
   
   <p>
     <a href="#"><img src="https://img.shields.io/badge/课程-37+-orange?style=flat-square" alt="课程数"></a>
-    <a href="#"><img src="https://img.shields.io/badge/学期-大一~大三-red?style=flat-square" alt="学期"></a>
+    <a href="#"><img src="https://img.shields.io/badge/学期-大一~大三-red?style=flat-square" alt="学期"></a>  
     <a href="https://yuhangchen1.github.io/HUST_OPEN_SOURCE/"><img src="https://img.shields.io/badge/HUST-开源计划-purple?style=flat-square" alt="HUST开源计划"></a>
   </p>
 </div>
@@ -238,7 +238,6 @@ git sparse-checkout set "IB 数据结构"
 - 🌟 [HUST开源计划](https://yuhangchen1.github.io/HUST_OPEN_SOURCE/) - 华科更多开源学习资料
 - 🌟 [Sukuna的学解](https://github.com/SukunaShinmyoumaru-hust/Hust-opensource-Xuejie)
 - 📚 [浙江大学课程攻略共享计划](https://github.com/QSCTech/zju-icicles)
-- 📖 [清华大学计算机系课程攻略](https://github.com/PKUanon/REKCARC-TSC-UHT)
 - 💡 [上海交通大学课程资料分享](https://github.com/c-hj/SJTU-Courses)
 
 ---
