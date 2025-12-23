@@ -215,27 +215,11 @@ git sparse-checkout set "IB 数据结构"
 - 代码文件：使用有意义的文件名，建议包含题目或功能描述
 - 文档文件：使用中文命名，清晰描述内容
 
-### 内容要求
+### 内容建议
 
 - ✅ 确保上传的代码可以正常运行
 - ✅ 添加必要的注释和说明
-- ✅ 尊重知识产权，不上传教师原始课件（除非获得授权）
 - ✅ 保护隐私，不上传包含个人敏感信息的文件
-
----
-
-## 🎓 课程亮点
-
-### 💼 软件工程 - 喻园易站项目
-
-真实的全栈项目开发案例，采用前后端分离架构：
-
-- **后端**：Node.js + Express + MySQL
-- **前端**：React + Vite + Tailwind CSS  
-- **特色**：JWT 鉴权、WebSocket 实时通信、邮箱验证码
-- **功能**：闲置交易、跑腿任务、私信聊天
-
-🔗 [在线演示](http://47.122.126.189/) | [源码仓库](https://github.com/Ilosyi/YuYuanYiZhan/tree/main)
 
 ---
 
@@ -244,7 +228,7 @@ git sparse-checkout set "IB 数据结构"
 <div align="center">
   <img src="https://img.shields.io/github/repo-size/Ilosyi/Hust-CS-Learning-Library?style=flat-square&label=仓库大小" alt="仓库大小">
   <img src="https://img.shields.io/github/commit-activity/y/Ilosyi/Hust-CS-Learning-Library?style=flat-square&label=年度提交" alt="年度提交">
-  <img src="https://img.shields.io/github/last-commit/Ilosyi/Hust-CS-Learning-Library?style=flat-square&label=最后更新" alt="最后更新">
+  <img src="https://img.shields.io/github/last-commit/Ilosyi/Hust-CS-Learning-Library?style=flat-square&label=最后更新" alt="最后更新">  
 </div>
 
 ---
@@ -252,6 +236,7 @@ git sparse-checkout set "IB 数据结构"
 ## 🔗 相关资源
 
 - 🌟 [HUST开源计划](https://yuhangchen1.github.io/HUST_OPEN_SOURCE/) - 华科更多开源学习资料
+- 🌟 [Sukuna的学解](https://github.com/SukunaShinmyoumaru-hust/Hust-opensource-Xuejie)
 - 📚 [浙江大学课程攻略共享计划](https://github.com/QSCTech/zju-icicles)
 - 📖 [清华大学计算机系课程攻略](https://github.com/PKUanon/REKCARC-TSC-UHT)
 - 💡 [上海交通大学课程资料分享](https://github.com/c-hj/SJTU-Courses)
