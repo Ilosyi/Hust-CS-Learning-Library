@@ -1,9 +1,9 @@
-## [代码看这个仓库](https://gitee.com/ilosyi/hustos-pke)
+## [代码看这个仓库(暂时为私有)((https://gitee.com/ilosyi/hustos-pke)
 每个子实验对应一个分支
 
 具体要改动哪些文件代码可结合git记录和实验文档
 
-也可查看[AI交互记录（实验指南）.md](https://ilosyi.github.io/404.html)
+也可查看[AI交互记录（实验指南）.md(暂未上传)也可查看[AI交互记录（实验指南）.md(暂未上传也可查看[AI交互记录
 
 ## 环境准备教程（docker）
 ### **安装Docker桌面环境**
