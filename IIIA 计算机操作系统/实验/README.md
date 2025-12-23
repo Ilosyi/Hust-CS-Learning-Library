@@ -3,7 +3,7 @@
 
 具体要改动哪些文件代码可结合git记录和实验文档
 
-也可查看[AI交互记录（实验指南）.md](https://ilosyi.github.io/pke.html)
+也可查看[AI交互记录（实验指南）.md](https://ilosyi.github.io/404.html)
 
 ## 环境准备教程（docker）
 ### **安装Docker桌面环境**
