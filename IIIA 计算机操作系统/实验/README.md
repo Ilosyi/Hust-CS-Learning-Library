@@ -1,4 +1,4 @@
-## 防gank，暂不传代码
+## 代码和过程请见[PKE实验](https://ilosyi.github.io/post/pke/)
 
 ## 环境准备教程（docker）
 ### **安装Docker桌面环境**
