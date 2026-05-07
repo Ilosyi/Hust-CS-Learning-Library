@@ -237,6 +237,7 @@ git sparse-checkout set "IB 数据结构"
 
 - 🌟 [HUST开源计划](https://yuhangchen1.github.io/HUST_OPEN_SOURCE/) - 华科更多开源学习资料
 - 🌟 [Sukuna的学解](https://github.com/SukunaShinmyoumaru-hust/Hust-opensource-Xuejie)
+- 🌟 [1037wiki](https://1037.wiki)
 - 📚 [浙江大学课程攻略共享计划](https://github.com/QSCTech/zju-icicles)
 - 💡 [上海交通大学课程资料分享](https://github.com/c-hj/SJTU-Courses)
 
