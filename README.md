@@ -10,7 +10,7 @@
   
   <p>
     <a href="#"><img src="https://img.shields.io/badge/课程-37+-orange?style=flat-square" alt="课程数"></a>
-    <a href="#"><img src="https://img.shields.io/badge/学期-大一~大三-red?style=flat-square" alt="学期"></a>  
+    <a href="#"><img src="https://img.shields.io/badge/学期-大一~大三-red?style=flat-square" alt="学期"></a>  
     <a href="https://yuhangchen1.github.io/HUST_OPEN_SOURCE/"><img src="https://img.shields.io/badge/HUST-开源计划-purple?style=flat-square" alt="HUST开源计划"></a>
   </p>
 </div>
@@ -37,7 +37,7 @@
 - 💻 **实践代码**：包含实验代码、头歌平台代码、课程设计项目
 - 📝 **学习笔记**：部分课程包含学习笔记和总结
 - 🎯 **项目实战**：真实的课程项目案例（如软件工程项目）
-- 📦 **便捷下载**：支持单个文件夹下载
+- ��� **便捷下载**：支持单个文件夹下载
 
 ---
 
@@ -148,6 +148,15 @@
   </tr>
 </table>
 
+### 📒 大三下学期 (IIIB)
+
+<table>
+  <tr>
+    <td>📘 编译原理</td>
+    <td>🏗️ 计算机系统结构</td>
+  </tr>
+</table>
+
 ### 📁 其他资料
 
 <table>
@@ -229,7 +238,7 @@ git sparse-checkout set "IB 数据结构"
 <div align="center">
   <img src="https://img.shields.io/github/repo-size/Ilosyi/Hust-CS-Learning-Library?style=flat-square&label=仓库大小" alt="仓库大小">
   <img src="https://img.shields.io/github/commit-activity/y/Ilosyi/Hust-CS-Learning-Library?style=flat-square&label=年度提交" alt="年度提交">
-  <img src="https://img.shields.io/github/last-commit/Ilosyi/Hust-CS-Learning-Library?style=flat-square&label=最后更新" alt="最后更新">  
+  <img src="https://img.shields.io/github/last-commit/Ilosyi/Hust-CS-Learning-Library?style=flat-square&label=最后更新" alt="最后更新">  
 </div>
 
 ---
@@ -265,7 +274,7 @@ git sparse-checkout set "IB 数据结构"
 
 <div align="center">
   <p><strong>Made with ❤️ by HUST CS Students</strong></p>
-  <p>© 2024 Hust-CS-Learning-Library. All rights reserved.</p>
+  <p>© 2026 Hust-CS-Learning-Library. All rights reserved.</p>
   
   <p>
     <a href="#top">⬆️ 回到顶部</a>
