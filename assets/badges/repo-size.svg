@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="138" height="20" role="img" aria-label="仓库大小: 1.7 GB">
+  <title>仓库大小: 1.7 GB</title>
+  <rect width="74" height="20" fill="#555"/>
+  <rect x="74" width="64" height="20" fill="#007ec6"/>
+  <g fill="#fff" text-anchor="middle" font-family="Verdana,Geneva,DejaVu Sans,sans-serif" font-size="11">
+    <text x="37" y="14">仓库大小</text>
+    <text x="106" y="14">1.7 GB</text>
+  </g>
+</svg>

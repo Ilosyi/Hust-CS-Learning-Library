@@ -236,9 +236,9 @@ git sparse-checkout set "IB 数据结构"
 ## 📊 仓库统计
 
 <div align="center">
-  <img src="https://img.shields.io/github/repo-size/Ilosyi/Hust-CS-Learning-Library?style=flat-square&label=仓库大小" alt="仓库大小">
-  <img src="https://img.shields.io/github/commit-activity/y/Ilosyi/Hust-CS-Learning-Library?style=flat-square&label=年度提交" alt="年度提交">
-  <img src="https://img.shields.io/github/last-commit/Ilosyi/Hust-CS-Learning-Library?style=flat-square&label=最后更新" alt="最后更新">  
+  <img src="./assets/badges/repo-size.svg" alt="仓库大小">
+  <img src="./assets/badges/yearly-commits.svg" alt="年度提交">
+  <img src="./assets/badges/last-commit.svg" alt="最后更新">  
 </div>
 
 ---
